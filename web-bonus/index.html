@@ -1,0 +1,306 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <title>Web-Bonus</title>
+</head>
+
+<body>
+
+    <div id="myModal" class="modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose your fighter</h5>
+                </div>
+                <div class="modal-body container">
+                    <div id="card-container" class="row align-items-center"></div>
+                    <div class="row align-items-end">
+                        <div id="reaction" class="col-12"></div>
+                    </div>
+                </div>
+                <div id="hoho" class="modal-footer d-none">
+                    <button id="zakroysya" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="button" class="d-none" data-toggle="modal" data-target="#myModal">Hahaha</button>
+
+    <div id="choose-card" class="col d-none">
+        <div class="tick card text-center" role="button" data-hero-id="0">
+            <div class="card-body">
+                <h5 class="my-title card-title">Хахахахаха</h5>
+                <div class="my-first-description text-muted font-weight-bold">Хоохохох</div>
+                <div class="my-second-description">атолтилотиолиаолттолиа</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fighter-card" class="card mt-2 d-none enemy-card">
+        <div class="card-body">
+            <h5 class="card-title my-title">Enemy name</h5>
+            <div class="my-first-description">Description</div>
+            <div class="progress mt-3">
+                <div class="progress-bar hp-progress bg-danger" style="width: 100%" role="progressbar"></div>
+            </div>
+            <div class="progress mt-1">
+                <div class="progress-bar mana-progress bg-primary" style="width: 30%" role="progressbar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div id="hero-menu" class="col-2">
+                <div id="hero-card" class="card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title my-title">Hero name</h5>
+                        <div class="my-motto">Motto</div>
+                        <div class="progress hp-progress mt-3">
+                            <div class="progress-bar bg-danger" style="width: 30%" role="progressbar" aria-valuemin="0"
+                                aria-valuemax="100" aria-valuenow="20"></div>
+                        </div>
+                        <div class="progress mana-progress mt-1">
+                            <div class="progress-bar bg-primary" style="width: 30%" role="progressbar" aria-valuemin="0"
+                                aria-valuemax="100" aria-valuenow="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="perk-card" class="tack card mt-2" role="button">
+                    <div class="card-body">
+                        <h5 class="card-title my-title">Perk name</h5>
+                        <div class="my-first-description">Info</div>
+                        <div class="progress mana-progress mt-1">
+                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
+                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="perk-card" class="tack card mt-2" role="button">
+                    <div class="card-body">
+                        <h5 class="card-title my-title">Perk name</h5>
+                        <div class="my-first-description">Info</div>
+                        <div class="progress mana-progress mt-1">
+                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
+                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="perk-card" class="tack card mt-2" role="button">
+                    <div class="card-body">
+                        <h5 class="card-title my-title">Perk name</h5>
+                        <div class="my-first-description">Info</div>
+                        <div class="progress mana-progress mt-1">
+                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
+                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+            </div>
+            <div id="enemies-menu" class="col-2">
+            </div>
+        </div>
+    </div>
+
+
+    <script src="bootstrap/jQuery.js"></script>
+    <script src="bootstrap/bootstrap.min.js"></script>
+    <script>
+        class FighterPrototype {
+            constructor(){
+                this.id = arguments[0];
+                this.name = arguments[1];
+                this.hp = arguments[2];
+                this.mana = arguments[3];
+                this.skills = arguments[4];
+                this.firstDescription = arguments[5];
+                this.secondDescription = arguments[6];
+                this.answer = arguments[7];
+                this.motto = arguments[8];
+            }
+        }
+        let store = {
+            heros: [
+                new FighterPrototype(0, 'Кукумбер', 500, 100, [0, 1, 3],
+                '<span class="text-success">Зелёный</span>, пупырчатый, любит, когда его кусают',
+                'Не <span class="text-danger">красный</span>! Не путать!',
+                'Хохо, хехей! Я тебя <span class="text-success">закукумбрю</span>!',
+                'Всех закукумбрю!'),
+
+                new FighterPrototype(1, 'Помидориус', 300, 200, [0, 2, 4],
+                '<span class="text-danger">Красный</span>, гладкий, твой',
+                'Не <span class="text-success">зелёный</span>! Не путать!',
+                'Ахахахахахахахаххахахахахах',
+                'Я краснею'),
+
+                new FighterPrototype(2, 'Дынчундук', 500, 100, [0, 1, 3],
+                '<span class="text-warning">Жёлтый</span>, попал сюда случайно',
+                'Не <span class="text-danger">зелёный</span>! Не <span class="text-success">красный</span>!',
+                'Молю тебя!',
+                'Как я сюда попал')
+            ]
+        };
+
+        let heroNumber = -1;
+
+        function hehe() {
+            $('#hoho').removeClass('d-none');
+            $('.tick').removeClass('border-primary');
+            this.classList.add('border-primary');
+            heroNumber = this.dataset.heroId;
+            haha();
+        }
+
+        function hahah() {
+            $('.tack').removeClass('border-primary');
+            this.classList.add('border-primary');
+            heroNumber = this.dataset.heroId;
+            haha();
+        }
+
+        function haha() {
+            $('#reaction').html(heroNumber === -1 ? "" : store.heros[heroNumber].answer)
+        }
+
+        let game;
+
+        function onLoad() {
+            game = new Game();
+        }
+
+        $(window).on('load', onLoad);
+
+        class Game {
+            constructor() {
+                let $container = $('#card-container');
+                for (let i = 0; i < store.heros.length; i++) {
+                    let $card = $('#choose-card').clone();
+                    $card.children('div').attr('data-hero-id', i);
+                    $card.find('.my-title').html(store.heros[i].name);
+                    $card.find('.my-first-description').html(store.heros[i].firstDescription);
+                    $card.find('.my-second-description').html(store.heros[i].secondDescription);
+                    $card.removeClass('d-none');
+                    $container.append($card);
+
+                }
+                $('#button').click();
+                $('.tick').on('click', hehe);
+                $('.tack').on('click', hahah);
+                $('#zakroysya').on('click', () => this.onConfirm());
+            }
+
+            onConfirm() {
+                $('#button').click();
+                if (heroNumber === -1) return;
+                $('#hero-card').find('.my-title').html(store.heros[heroNumber].name);
+                $('#hero-card').find('.my-motto').html(store.heros[heroNumber].motto);
+                
+                this.fighter1 = new Fighter(store.heros[0]);
+                this.fighter2 = new Fighter(store.heros[1]);
+                this.fighter3 = new Fighter(store.heros[2]);
+            }
+        }
+
+        class FighterCard {
+            constructor(name = "enemy name", motto = "motto") { 
+                this.$card = this.$initializeCard(name, motto);
+                this.$getMenu().append(this.$card);
+            }
+
+            $getMenu() {
+                return $('#enemies-menu');
+            }
+
+            $initializeCard(name, motto) {
+                let $card = $('#fighter-card').clone();
+                $card.find('.my-title').html(name);
+                $card.find('.my-motto').html(motto);
+                $card.removeClass('d-none');
+                return $card;
+            }
+
+            setHpWidth(percents) {
+                percents = this.getRealPercents(percents);
+                this.$card.find('.hp-progress').width(percents + '%');
+            }
+
+            setManaWidth(percents) {
+                percents = this.getRealPercents(percents);
+                this.$card.find('.mana-progress').width(percents + '%');
+            }
+
+            active() {
+                this.$card.on("click", () => {
+                    $('.enemy-card').removeClass('border-primary');
+                    this.$card.addClass('border-primary');
+                });
+                this.$card.attr('role', 'button');
+            }
+
+            disactive() {
+                this.$card.on("click", () => {});
+                this.$card.attr('role', '');
+                this.$card.removeClass('border-primary');
+            }
+
+            getRealPercents(percents) {
+                if (percents < 0) return 0;
+                if (percents > 100) return 100;
+                return percents;
+            }
+        }
+
+        class HeroCard extends FighterCard {
+            constructor() {
+                super();
+                this.$card.removeClass('enemy-card');
+            }
+
+            $getMenu() {
+                return $('#hero-menu');
+            }
+        }
+
+        class Fighter {
+            constructor(prototype) {
+                this.prototype = prototype;
+                this.card = this.createCard(prototype);
+                this.hp = prototype.hp;
+                this.mana = prototype.mana;
+            }
+
+            createCard(prototype) {
+                return new FighterCard(prototype.name, prototype.motto);
+            }
+
+            setHp(count) {
+                this.hp = this.getRealHp(count);
+                this.card.setHpWidth(this.hp * 100 / this.prototype.hp);
+            }
+
+            getRealHp(count) {
+                if (count < 0) return 0;
+                if (count > this.prototype.hp) return this.prototype.hp;
+                return count;
+            }
+
+            setMana(count) {
+                this.mana = this.getRealMana(count);
+                this.card.setManaWidth(this.mana * 100 / this.prototype.mana);
+            }
+
+            getRealMana(count) {
+                if (count < 0) return 0;
+                if (count > this.prototype.mana) return this.prototype.mana;
+                return count;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
