@@ -41,68 +41,32 @@
     <div id="fighter-card" class="card mt-2 d-none enemy-card">
         <div class="card-body">
             <h5 class="card-title my-title">Enemy name</h5>
-            <div class="my-first-description">Description</div>
+            <div class="my-motto">Description</div>
             <div class="progress mt-3">
                 <div class="progress-bar hp-progress bg-danger" style="width: 100%" role="progressbar"></div>
             </div>
             <div class="progress mt-1">
-                <div class="progress-bar mana-progress bg-primary" style="width: 30%" role="progressbar"></div>
+                <div class="progress-bar mana-progress bg-primary" style="width: 100%" role="progressbar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="perk-card" class="card mt-2 d-none perk-card">
+        <div class="card-body">
+            <h5 class="card-title my-title">Perk name</h5>
+            <div class="my-info">Info</div>
+            <div class="progress mt-1">
+                <div class="progress-bar progress-bar-striped bg-primary mana-progress" style="width: 0%"
+                    role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="row">
-            <div id="hero-menu" class="col-2">
-                <div id="hero-card" class="card mt-2">
-                    <div class="card-body">
-                        <h5 class="card-title my-title">Hero name</h5>
-                        <div class="my-motto">Motto</div>
-                        <div class="progress hp-progress mt-3">
-                            <div class="progress-bar bg-danger" style="width: 30%" role="progressbar" aria-valuemin="0"
-                                aria-valuemax="100" aria-valuenow="20"></div>
-                        </div>
-                        <div class="progress mana-progress mt-1">
-                            <div class="progress-bar bg-primary" style="width: 30%" role="progressbar" aria-valuemin="0"
-                                aria-valuemax="100" aria-valuenow="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="perk-card" class="tack card mt-2" role="button">
-                    <div class="card-body">
-                        <h5 class="card-title my-title">Perk name</h5>
-                        <div class="my-first-description">Info</div>
-                        <div class="progress mana-progress mt-1">
-                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
-                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="perk-card" class="tack card mt-2" role="button">
-                    <div class="card-body">
-                        <h5 class="card-title my-title">Perk name</h5>
-                        <div class="my-first-description">Info</div>
-                        <div class="progress mana-progress mt-1">
-                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
-                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="perk-card" class="tack card mt-2" role="button">
-                    <div class="card-body">
-                        <h5 class="card-title my-title">Perk name</h5>
-                        <div class="my-first-description">Info</div>
-                        <div class="progress mana-progress mt-1">
-                            <div class="progress-bar progress-bar-striped bg-primary" style="width: 30%"
-                                role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-8">
-            </div>
-            <div id="enemies-menu" class="col-2">
-            </div>
+            <div id="hero-menu" class="col-2"></div>
+            <div class="col-8"></div>
+            <div id="enemies-menu" class="col-2"></div>
         </div>
     </div>
 
@@ -110,38 +74,71 @@
     <script src="bootstrap/jQuery.js"></script>
     <script src="bootstrap/bootstrap.min.js"></script>
     <script>
+
         class FighterPrototype {
-            constructor(){
+            constructor() {
                 this.id = arguments[0];
                 this.name = arguments[1];
                 this.hp = arguments[2];
                 this.mana = arguments[3];
                 this.skills = arguments[4];
-                this.firstDescription = arguments[5];
-                this.secondDescription = arguments[6];
-                this.answer = arguments[7];
-                this.motto = arguments[8];
+                this.motto = arguments[5];
             }
         }
+
+        class HeroPrototype extends FighterPrototype {
+            constructor() {
+                super(...arguments);
+                this.firstDescription = arguments[6];
+                this.secondDescription = arguments[7];
+                this.answer = arguments[8];
+            }
+        }
+
+        class PerkPrototype {
+            constructor() {
+                this.id = arguments[0];
+                this.name = arguments[1];
+                this.mana = arguments[2];
+                this.info = arguments[3];
+                this.effect = arguments[4];
+            }
+        }
+
         let store = {
             heros: [
-                new FighterPrototype(0, 'Кукумбер', 500, 100, [0, 1, 3],
-                '<span class="text-success">Зелёный</span>, пупырчатый, любит, когда его кусают',
-                'Не <span class="text-danger">красный</span>! Не путать!',
-                'Хохо, хехей! Я тебя <span class="text-success">закукумбрю</span>!',
-                'Всех закукумбрю!'),
+                new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 3],
+                    'Всех закукумбрю!',
+                    '<span class="text-success">Зелёный</span>, пупырчатый, любит, когда его кусают',
+                    'Не <span class="text-danger">красный</span>! Не путать!',
+                    'Хохо, хехей! Я тебя <span class="text-success">закукумбрю</span>!'),
 
-                new FighterPrototype(1, 'Помидориус', 300, 200, [0, 2, 4],
-                '<span class="text-danger">Красный</span>, гладкий, твой',
-                'Не <span class="text-success">зелёный</span>! Не путать!',
-                'Ахахахахахахахаххахахахахах',
-                'Я краснею'),
+                new HeroPrototype(1, 'Помидориус', 300, 200, [0, 2, 4],
+                    'Я краснею',
+                    '<span class="text-danger">Красный</span>, гладкий, твой',
+                    'Не <span class="text-success">зелёный</span>! Не путать!',
+                    'Ахахахахахахахаххахахахахах'),
 
-                new FighterPrototype(2, 'Дынчундук', 500, 100, [0, 1, 3],
-                '<span class="text-warning">Жёлтый</span>, попал сюда случайно',
-                'Не <span class="text-danger">зелёный</span>! Не <span class="text-success">красный</span>!',
-                'Молю тебя!',
-                'Как я сюда попал')
+                new HeroPrototype(2, 'Дынчундук', 500, 100, [0, 1, 3],
+                    'Как я сюда попал',
+                    '<span class="text-warning">Жёлтый</span>, попал сюда случайно',
+                    'Не <span class="text-danger">зелёный</span>! Не <span class="text-success">красный</span>!',
+                    'Молю тебя!')
+            ],
+            enemies: [
+                new FighterPrototype(0, 'Тварь', 500, 100, [0, 1, 3],
+                    '<span class="text-danger border-danger">Ненавижу!</span>'),
+                new FighterPrototype(0, 'Ничтожество', 500, 100, [0, 1, 3],
+                    'Агрх!'),
+                new FighterPrototype(0, 'Ублюдок', 500, 100, [0, 1, 3],
+                    'Упф'),
+                new FighterPrototype(0, 'Мразь', 500, 100, [0, 1, 3],
+                    '<span class="text-danger border-danger">Ехехеехех</span>'),
+            ],
+            perks: [
+                new PerkPrototype(0, 'Взрыв', 100, 'Убивает всех', (target) => { target.addHp(-20); }),
+                new PerkPrototype(1, 'Молния', 50, 'Пытается убить всех', (target) => { target.addHp(-10); }),
+                new PerkPrototype(2, 'Лечение', 50, 'Никого не пытается убить', (target) => { target.addHp(50); })
             ]
         };
 
@@ -195,18 +192,22 @@
 
             onConfirm() {
                 $('#button').click();
-                if (heroNumber === -1) return;
+                if (heroNumber === -1) {
+                    window.location.reload();
+                };
+
                 $('#hero-card').find('.my-title').html(store.heros[heroNumber].name);
                 $('#hero-card').find('.my-motto').html(store.heros[heroNumber].motto);
-                
-                this.fighter1 = new Fighter(store.heros[0]);
-                this.fighter2 = new Fighter(store.heros[1]);
-                this.fighter3 = new Fighter(store.heros[2]);
+
+                this.hero = new Hero(store.heros[heroNumber]);
+                this.enemy1 = new Enemy(store.enemies[randomInt(0, 3)]);
+                this.enemy2 = new Enemy(store.enemies[randomInt(0, 3)]);
+                this.enemy3 = new Enemy(store.enemies[randomInt(0, 3)]);
             }
         }
 
         class FighterCard {
-            constructor(name = "enemy name", motto = "motto") { 
+            constructor(name = "enemy name", motto = "motto") {
                 this.$card = this.$initializeCard(name, motto);
                 this.$getMenu().append(this.$card);
             }
@@ -233,20 +234,6 @@
                 this.$card.find('.mana-progress').width(percents + '%');
             }
 
-            active() {
-                this.$card.on("click", () => {
-                    $('.enemy-card').removeClass('border-primary');
-                    this.$card.addClass('border-primary');
-                });
-                this.$card.attr('role', 'button');
-            }
-
-            disactive() {
-                this.$card.on("click", () => {});
-                this.$card.attr('role', '');
-                this.$card.removeClass('border-primary');
-            }
-
             getRealPercents(percents) {
                 if (percents < 0) return 0;
                 if (percents > 100) return 100;
@@ -254,14 +241,76 @@
             }
         }
 
+        class EnemyCard extends FighterCard {
+            turnOn() {
+                this.$card.on("click", () => {
+                    $('.enemy-card').removeClass('border-primary');
+                    this.$card.addClass('border-primary');
+                });
+                this.$card.attr('role', 'button');
+            }
+
+            turnOff() {
+                this.$card.off("click");
+                this.$card.attr('role', '');
+                this.$card.removeClass('border-primary');
+            }
+        }
+
         class HeroCard extends FighterCard {
-            constructor() {
-                super();
+            constructor(name, motto) {
+                super(name, motto);
                 this.$card.removeClass('enemy-card');
             }
 
             $getMenu() {
                 return $('#hero-menu');
+            }
+        }
+
+        class PerkCard {
+            constructor(name = "perk name", info = "info") {
+                this.$card = this.$initializeCard(name, info);
+                $('#hero-menu').append(this.$card);
+            }
+
+            $initializeCard(name, info) {
+                let $card = $('#perk-card').clone();
+                $card.find('.my-title').html(name);
+                $card.find('.my-info').html(info);
+                $card.removeClass('d-none');
+                return $card;
+            }
+
+            setProgressWidth(percents) {
+                percents = this.getRealPercents(percents);
+                this.$card.find('.mana-progress').width(percents + '%');
+                if (percents >= 100) this.turnOn();
+                else this.turnOff();
+            }
+
+            getRealPercents(percents) {
+                if (percents < 0) return 0;
+                if (percents > 100) return 100;
+                return +percents;
+            }
+
+            turnOn() {
+                this.$card.find('.mana-progress').removeClass('progress-bar-striped progress-bar-animated');
+                this.$card.removeClass('bg-light');
+                this.$card.on("click", () => {
+                    $('.perk-card').removeClass('border-primary');
+                    this.$card.addClass('border-primary');
+                });
+                this.$card.attr('role', 'button');
+            }
+
+            turnOff() {
+                this.$card.find('.mana-progress').addClass('progress-bar-striped progress-bar-animated');
+                this.$card.addClass('bg-light');
+                this.$card.off("click");
+                this.$card.attr('role', '');
+                this.$card.removeClass('border-primary');
             }
         }
 
@@ -282,6 +331,10 @@
                 this.card.setHpWidth(this.hp * 100 / this.prototype.hp);
             }
 
+            addHp(count) {
+                setHp(+this.hp + (+count));
+            }
+
             getRealHp(count) {
                 if (count < 0) return 0;
                 if (count > this.prototype.hp) return this.prototype.hp;
@@ -298,6 +351,69 @@
                 if (count > this.prototype.mana) return this.prototype.mana;
                 return count;
             }
+        }
+
+        class Enemy extends Fighter {
+            createCard(prototype) {
+                return new EnemyCard(prototype.name, prototype.motto);
+            }
+        }
+
+        class Hero extends Fighter {
+            constructor() {
+                super(...arguments);
+                this.perk1 = new Perk(store.perks[0], this);
+                this.perk2 = new Perk(store.perks[1], this);
+                this.perk3 = new Perk(store.perks[2], this);
+            }
+
+            createCard(prototype) {
+                return new HeroCard(prototype.name, prototype.motto);
+            }
+        }
+
+        class Perk {
+            constructor(prototype, hero) {
+                this.prototype = prototype;
+                this.card = this.createCard(prototype);
+                this.mana = 0;
+                this.update();
+            }
+
+            async update() {
+                this.addMana(1);
+                await sleep(100);
+                await this.update();
+            }
+
+            createCard(prototype) {
+                return new PerkCard(prototype.name, prototype.info);
+            }
+
+            setMana(count) {
+                this.mana = this.getRealMana(count);
+                this.card.setProgressWidth(this.mana * 100 / this.prototype.mana);
+            }
+
+            addMana(count) {
+                this.setMana(+this.mana + (+count));
+            }
+
+            getRealMana(count) {
+                if (count < 0) return 0;
+                if (count > this.prototype.mana) return this.prototype.mana;
+                return count;
+            }
+        }
+
+        function randomInt(min = 0, max = Number.MAX_SAFE_INTEGER) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        async function sleep(ms) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, ms)
+            });
         }
 
     </script>
