@@ -102,6 +102,7 @@
                 this.mana = arguments[2];
                 this.info = arguments[3];
                 this.effect = arguments[4];
+                this.forSelf = arguments[5];
             }
         }
 
@@ -113,7 +114,7 @@
                     'Не <span class="text-danger">красный</span>! Не путать!',
                     'Хохо, хехей! Я тебя <span class="text-success">закукумбрю</span>!'),
 
-                new HeroPrototype(1, 'Помидориус', 300, 200, [0, 2, 4],
+                new HeroPrototype(1, 'Помидориус', 300, 200, [0, 2, 3],
                     'Я краснею',
                     '<span class="text-danger">Красный</span>, гладкий, твой',
                     'Не <span class="text-success">зелёный</span>! Не путать!',
@@ -123,7 +124,19 @@
                     'Как я сюда попал',
                     '<span class="text-warning">Жёлтый</span>, попал сюда случайно',
                     'Не <span class="text-danger">зелёный</span>! Не <span class="text-success">красный</span>!',
-                    'Молю тебя!')
+                    'Молю тебя!'),
+
+                new HeroPrototype(3, '<span class="bg-success text-light">Огурцан</span>', 200, 50, [1, 2, 3],
+                    'Пумпурумпум',
+                    'Не путать с Кукумбером!',
+                    'Тоже <span class="text-success">зелёный</span>, но не Кукумбер!',
+                    'Не вздумай сказать, что я <span class="text-success">Кукумбер</span>!'),
+
+                new HeroPrototype(4, 'Арбузон', 500, 100, [0, 1, 2],
+                    'Пшпшпшп',
+                    'Самый <b>большой</b>',
+                    'Самый спелый',
+                    '<span class="text-success">Потряси меня!</span>')
             ],
             enemies: [
                 new FighterPrototype(0, 'Тварь', 500, 100, [0, 1, 3],
@@ -136,9 +149,17 @@
                     '<span class="text-danger border-danger">Ехехеехех</span>'),
             ],
             perks: [
-                new PerkPrototype(0, 'Взрыв', 100, 'Убивает всех', (target) => { target.addHp(-20); }),
-                new PerkPrototype(1, 'Молния', 50, 'Пытается убить всех', (target) => { target.addHp(-10); }),
-                new PerkPrototype(2, 'Лечение', 50, 'Никого не пытается убить', (target) => { target.addHp(50); })
+                new PerkPrototype(0, 'Взрыв', 100, 'Убивает всех', 
+                    (target) => { target.addHp(-20); }, false),
+                new PerkPrototype(1, 'Молния', 30, 'Пытается убить всех', 
+                    (target) => { target.addHp(-10); }, false),
+                new PerkPrototype(2, 'Лечение', 50, 'Никого не пытается убить', 
+                    (target) => { target.addHp(50); }, true),
+                new PerkPrototype(3, 'Жертва', 70, 'Пытается убить самого себя', 
+                    (target) => { 
+                        target.addMana(200); 
+                        target.addHp(-50);
+                    }, true)
             ]
         };
 
@@ -199,10 +220,29 @@
                 $('#hero-card').find('.my-title').html(store.heros[heroNumber].name);
                 $('#hero-card').find('.my-motto').html(store.heros[heroNumber].motto);
 
-                this.hero = new Hero(store.heros[heroNumber]);
-                this.enemy1 = new Enemy(store.enemies[randomInt(0, 3)]);
-                this.enemy2 = new Enemy(store.enemies[randomInt(0, 3)]);
-                this.enemy3 = new Enemy(store.enemies[randomInt(0, 3)]);
+                this.hero = new Hero(store.heros[heroNumber], this);
+                this.enemies = [];
+                this.initializeEnemies();
+            }
+
+            initializeEnemies() {
+                for (let i = 0; i < 4; i++) this.addEnemy();
+            }
+
+            addEnemy() {
+                this.enemies.push(new Enemy(store.enemies[randomInt(0, store.enemies.length)]));
+            }
+
+            activateEnemies(effect) {
+                this.enemies.map((enemy) => { enemy.activate(effect) });
+            }
+
+            disactivateEnemies(effect) {
+                this.enemies.map((enemy) => { enemy.disactivate(effect) });
+            }
+
+            apply(target) {
+
             }
         }
 
@@ -239,22 +279,33 @@
                 if (percents > 100) return 100;
                 return percents;
             }
-        }
 
-        class EnemyCard extends FighterCard {
             turnOn() {
                 this.$card.on("click", () => {
                     $('.enemy-card').removeClass('border-primary');
                     this.$card.addClass('border-primary');
+                    this.$card.removeClass('bg-light');
+                });
+                this.$card.on("mouseenter", () => {
+                    this.$card.removeClass('bg-light');
+                });
+                this.$card.on("mouseleave", () => {
+                    this.$card.addClass('bg-light');
                 });
                 this.$card.attr('role', 'button');
+                this.$card.addClass('bg-light');
             }
 
             turnOff() {
-                this.$card.off("click");
+                this.$card.off("click mouseenter mouseleave");
                 this.$card.attr('role', '');
                 this.$card.removeClass('border-primary');
+                this.$card.removeClass('bg-light');
             }
+        }
+
+        class EnemyCard extends FighterCard {
+
         }
 
         class HeroCard extends FighterCard {
@@ -272,6 +323,7 @@
             constructor(name = "perk name", info = "info") {
                 this.$card = this.$initializeCard(name, info);
                 $('#hero-menu').append(this.$card);
+                this.onclick = null;
             }
 
             $initializeCard(name, info) {
@@ -279,7 +331,12 @@
                 $card.find('.my-title').html(name);
                 $card.find('.my-info').html(info);
                 $card.removeClass('d-none');
+                $card.addClass('bg-light');
                 return $card;
+            }
+
+            setOnclick(method) {
+                this.onclick = method;
             }
 
             setProgressWidth(percents) {
@@ -297,29 +354,35 @@
 
             turnOn() {
                 this.$card.find('.mana-progress').removeClass('progress-bar-striped progress-bar-animated');
-                this.$card.removeClass('bg-light');
                 this.$card.on("click", () => {
                     $('.perk-card').removeClass('border-primary');
                     this.$card.addClass('border-primary');
+                    this.onclick();
+                });
+                this.$card.on("mouseenter", () => {
+                    this.$card.removeClass('bg-light');
+                });
+                this.$card.on("mouseleave", () => {
+                    this.$card.addClass('bg-light');
                 });
                 this.$card.attr('role', 'button');
             }
 
             turnOff() {
                 this.$card.find('.mana-progress').addClass('progress-bar-striped progress-bar-animated');
-                this.$card.addClass('bg-light');
-                this.$card.off("click");
+                this.$card.off("click mouseenter mouseleave");
                 this.$card.attr('role', '');
                 this.$card.removeClass('border-primary');
             }
         }
 
         class Fighter {
-            constructor(prototype) {
+            constructor(prototype, game) {
                 this.prototype = prototype;
                 this.card = this.createCard(prototype);
                 this.hp = prototype.hp;
                 this.mana = prototype.mana;
+                this.game = game;
             }
 
             createCard(prototype) {
@@ -351,6 +414,14 @@
                 if (count > this.prototype.mana) return this.prototype.mana;
                 return count;
             }
+
+            activate() {
+                this.card.turnOn();
+            }
+
+            disactivate() {
+                this.card.turnOff();
+            }
         }
 
         class Enemy extends Fighter {
@@ -362,13 +433,41 @@
         class Hero extends Fighter {
             constructor() {
                 super(...arguments);
-                this.perk1 = new Perk(store.perks[0], this);
-                this.perk2 = new Perk(store.perks[1], this);
-                this.perk3 = new Perk(store.perks[2], this);
+                this.perks = []; 
+                this.initializePerks();
+                this.method = null;
+            }
+
+            initializePerks() {
+                this.prototype.skills.forEach(perkNumber => {
+                    if(store.perks[perkNumber].forSelf) 
+                        this.perks.push(new OnHeroPerk(store.perks[perkNumber], this));
+                    else 
+                        this.perks.push(new OnEnemyPerk(store.perks[perkNumber], this));
+                });
             }
 
             createCard(prototype) {
                 return new HeroCard(prototype.name, prototype.motto);
+            }
+
+            setMethod(targetMethod, effectMethod) {
+                targetMethod();
+                this.method = effectMethod;
+            }
+
+            getOnEnemyMethod() {
+                return () => {
+                    this.disactivate();
+                    this.game.activateEnemies();
+                };
+            }
+
+            getOnHeroMethod() {
+                return () => {
+                    this.game.disactivateEnemies();
+                    this.activate();
+                };
             }
         }
 
@@ -376,6 +475,8 @@
             constructor(prototype, hero) {
                 this.prototype = prototype;
                 this.card = this.createCard(prototype);
+                this.hero = hero;
+                this.card.setOnclick(this.getOnclick());
                 this.mana = 0;
                 this.update();
             }
@@ -404,6 +505,24 @@
                 if (count > this.prototype.mana) return this.prototype.mana;
                 return count;
             }
+
+            getOnclick() {
+                return () => { this.hero.setMethod(this.getOnclickType(), this.prototype.effect) };
+            }
+
+            getOnclickType() {
+                return this.hero.getOnEnemyMethod();
+            }
+        }
+
+        class OnHeroPerk extends Perk {
+            getOnclickType() {
+                return this.hero.getOnHeroMethod();
+            }
+        }
+
+        class OnEnemyPerk extends Perk {
+
         }
 
         function randomInt(min = 0, max = Number.MAX_SAFE_INTEGER) {
