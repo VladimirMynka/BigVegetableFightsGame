@@ -10,7 +10,8 @@ export class HeroPrototype extends FighterPrototype {
         motto: string,
         public firstDescription: string,
         public secondDescription: string,
-        public answer: string
+        public answer: string,
+        public reaction?: Function
         ) {
         super(id, name, hp, mana, skills, motto);
     }

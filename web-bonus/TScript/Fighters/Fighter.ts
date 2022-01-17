@@ -48,7 +48,7 @@ export class Fighter {
     }
 
     public addMana(count: number): void {
-        this.mana = this.mana + count;
+        this.mana = this._mana + count;
     }
 
     private getAdequateMana(count: number): number {
@@ -58,7 +58,7 @@ export class Fighter {
     }
 
     public activate(effect: Function): void {
-        this._card.turnOn(effect);
+        this._card.turnOn(effect, this);
     }
 
     public disactivate(): void {

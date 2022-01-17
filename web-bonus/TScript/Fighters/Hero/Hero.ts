@@ -24,9 +24,9 @@ export class Hero extends Fighter {
     private initializePerks(): void {
         this.prototype.skills.forEach(perkNumber => {
             if(store.perks[perkNumber].forSelf) 
-                this._perks.push(new OnHeroPerk(store.perks[perkNumber], this));
+                this._perks.push(new OnHeroPerk(store.perks[perkNumber], this, this.game));
             else 
-                this._perks.push(new OnEnemyPerk(store.perks[perkNumber], this));
+                this._perks.push(new OnEnemyPerk(store.perks[perkNumber], this, this.game));
         });
     }
 

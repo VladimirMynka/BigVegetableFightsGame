@@ -2,6 +2,8 @@ import { PerkCard } from "./PerkCard";
 import { PerkPrototype } from "./PerkPrototype";
 import { Hero } from "../Fighters/Hero/Hero";
 import { Util } from "../Common/Util";
+import { Fighter } from "../Fighters/Fighter";
+import { Game } from "../Main/Game";
 
 export class Perk {
     private _card: PerkCard;
@@ -9,7 +11,8 @@ export class Perk {
 
     constructor(
         protected prototype: PerkPrototype, 
-        protected hero: Hero
+        protected hero: Hero,
+        private _game: Game
         ) {
         this._card = this.createCard(prototype);
         this._card.setOnclick(this.getOnclick());
@@ -47,7 +50,10 @@ export class Perk {
     }
 
     public getOnclick(): Function {
-        return () => { this.hero.setMethod(this.getOnclickType(), this.prototype.effect) };
+        return () => { 
+            this.hero.setMethod(this.getOnclickType(), 
+            (target: Fighter) => { this.prototype.effect(target, this.hero, this._game) } 
+        )}
     }
 
     public getOnclickType(): Function {

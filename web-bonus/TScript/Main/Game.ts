@@ -7,23 +7,53 @@ export class Game {
     private _heroNumber: number;
 
     constructor() {
-        let $container = $('#card-container');
-        let $cards: Array<JQuery<HTMLElement>> = [];
-        for (let i = 0; i < store.heros.length; i++) {
-            let $card = $('#choose-card').clone();
-            $card.children('div').attr('data-hero-id', i);
-            $card.find('.my-title').html(store.heros[i].name);
-            $card.find('.my-first-description').html(store.heros[i].firstDescription);
-            $card.find('.my-second-description').html(store.heros[i].secondDescription);
-            $card.removeClass('d-none');
-            $container.append($card);
-            $cards.push($card);
-
-        }
+        this.initializeChoosenWindow();
         $('#button').click();
-        document.getElementsByClassName('.tick')
-        $cards.forEach((elem, index) => { elem.on('click', () => { this.hehe(index, elem) }) });
         $('#zakroysya').on('click', () => this.onConfirm());
+    }
+
+    private initializeChoosenWindow(): void {
+        let $container = $('#card-container');
+        $container.html("");
+        for (let i = 0; i < store.heros.length; i++) {
+            $container.append(this.initializeOneCard(i));
+        }
+    }
+
+    private initializeChoosenWindowExcept(index: number, $card: JQuery<HTMLElement>): void {
+        let $container = $('#card-container');
+        $container.html("");
+        for (let i = 0; i < store.heros.length; i++) {
+            if (i === index) 
+                $container.append($card);
+            else 
+                $container.append(this.initializeOneCard(i));
+        }
+    }
+
+    private initializeOneCard(index: number) {
+        let $card = $('#choose-card').clone();
+        $card.children('div').attr('data-hero-id', index);
+        $card.find('.my-title').html(store.heros[index].name);
+        $card.find('.my-first-description').html(store.heros[index].firstDescription);
+        $card.find('.my-second-description').html(store.heros[index].secondDescription);
+        $card.removeClass('d-none');
+        $card.on('click', () => { this.chooseCardOnClick(index, $card.find('.card')) });
+        return $card;
+    }
+
+    private chooseCardOnClick(index: number, $card: JQuery<HTMLElement>): void {
+        $('#hoho').removeClass('d-none');
+        this.initializeChoosenWindowExcept(index, $card.parent());
+        $card.addClass('border-primary');
+        this._heroNumber = index;
+        this.setReaction(store.heros[index].answer, store.heros[index]?.reaction, $card);
+    }
+
+    private setReaction(string: string, method?: Function, $card?: JQuery): void {
+        $('#reaction').html(string);
+        if (typeof method === 'function') 
+            method($card);
     }
 
     public hero: Hero;
@@ -38,18 +68,6 @@ export class Game {
         this.hero = new Hero(store.heros[this._heroNumber], this);
         this.enemies = [];
         this.initializeEnemies();
-    }
-
-    private hehe(index: number, $card: JQuery<HTMLElement>): void {
-        $('#hoho').removeClass('d-none');
-        $('.tick').removeClass('border-primary');
-        $card.addClass('border-primary');
-        this._heroNumber = index;
-        this.setReaction();
-    }
-
-    private setReaction(): void {
-        $('#reaction').html(this._heroNumber === -1 ? "" : store.heros[this._heroNumber].answer)
     }
 
     initializeEnemies(): void {

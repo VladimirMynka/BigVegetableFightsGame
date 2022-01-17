@@ -1,6 +1,6 @@
-import { ICard } from "../Common/ICard";
+import { Fighter } from "./Fighter";
 
-export class FighterCard implements ICard {
+export class FighterCard {
     protected $card: JQuery<HTMLElement>;
 
     constructor(name = "enemy name", motto = "motto") {
@@ -36,11 +36,10 @@ export class FighterCard implements ICard {
         return percents;
     }
 
-    public turnOn(effect: Function): void {
+    public turnOn(effect: Function, owner: Fighter): void {
+        this.$card.off("click mouseenter mouseleave");
         this.$card.on("click", () => {
-            $('.enemy-card').removeClass('border-primary');
-            this.$card.addClass('border-primary');
-            this.$card.removeClass('bg-light');
+            effect(owner);
         });
         this.$card.on("mouseenter", () => {
             this.$card.removeClass('bg-light');

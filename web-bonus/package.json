@@ -3,6 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@types/jquery": "^3.5.13",
     "browserify": "^17.0.0",
     "del": "2.2.0",
     "gulp": "^4.0.2",
@@ -10,9 +11,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "jquery": "3.3.1",
     "tsify": "^5.0.4",
-    "vinyl-source-stream": "^2.0.0",
-    "@types/bootstrap": "4.1.2",
-    "@types/jquery": "^3.3.10"
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "typescript": "^4.5.4"
