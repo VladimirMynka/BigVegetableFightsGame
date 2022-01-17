@@ -1,4 +1,4 @@
-import { ICard } from "./ICard";
+import { ICard } from "../Common/ICard";
 
 export class PerkCard implements ICard {
     private _$card: JQuery<HTMLElement>;

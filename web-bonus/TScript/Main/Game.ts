@@ -1,7 +1,7 @@
-import { store } from "./Store";
-import { Util } from "./Util";
-import { Hero } from "./Hero";
-import { Enemy } from "./Enemy";
+import { store } from "../Store/Store";
+import { Util } from "../Common/Util";
+import { Hero } from "../Fighters/Hero/Hero";
+import { Enemy } from "../Fighters/Enemy/Enemy";
 
 export class Game {
     private _heroNumber: number;

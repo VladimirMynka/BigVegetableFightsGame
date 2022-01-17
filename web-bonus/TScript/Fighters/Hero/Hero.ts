@@ -1,13 +1,13 @@
-import { Fighter } from "./Fighter";
+import { Fighter } from "../Fighter";
 import { HeroPrototype } from "./HeroPrototype";
-import { FighterPrototype } from "./FighterPrototype";
+import { FighterPrototype } from "../FighterPrototype";
 import { HeroCard } from "./HeroCard";
-import { FighterCard } from "./FighterCard";
-import { Perk } from "./Perk";
-import { OnHeroPerk } from "./OnHeroPerk";
-import { OnEnemyPerk } from "./OnEnemyPerk";
-import { Game } from "./Game";
-import { store } from "./Store";
+import { FighterCard } from "../FighterCard";
+import { Perk } from "../../Perks/Perk";
+import { OnHeroPerk } from "../../Perks/OnHeroPerk";
+import { OnEnemyPerk } from "../../Perks/OnEnemyPerk";
+import { Game } from "../../Main/Game";
+import { store } from "../../Store/Store";
 
 export class Hero extends Fighter {
     private _perks: Array<Perk>;

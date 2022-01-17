@@ -1,4 +1,4 @@
-import { FighterPrototype } from "./FighterPrototype";
+import { FighterPrototype } from "../FighterPrototype";
 
 export class HeroPrototype extends FighterPrototype {
     constructor(

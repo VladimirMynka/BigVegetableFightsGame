@@ -1,7 +1,7 @@
-import { HeroPrototype } from "./HeroPrototype";
-import { FighterPrototype } from "./FighterPrototype";
-import { PerkPrototype } from "./PerkPrototype";
-import { Fighter } from "./Fighter";
+import { HeroPrototype } from "../Fighters/Hero/HeroPrototype";
+import { FighterPrototype } from "../Fighters/FighterPrototype";
+import { PerkPrototype } from "../Perks/PerkPrototype";
+import { Fighter } from "../Fighters/Fighter";
 
 export let store = {
     heros: [

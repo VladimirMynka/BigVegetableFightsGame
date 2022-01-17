@@ -1,7 +1,7 @@
 import { PerkCard } from "./PerkCard";
 import { PerkPrototype } from "./PerkPrototype";
-import { Hero } from "./Hero";
-import { Util } from "./Util";
+import { Hero } from "../Fighters/Hero/Hero";
+import { Util } from "../Common/Util";
 
 export class Perk {
     private _card: PerkCard;

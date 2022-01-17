@@ -1,34 +1,26 @@
-const gulp = require("gulp");
-const concat = require("gulp-concat");
-var del = require('del');
+//const gulp = require("gulp");
+//const concat = require("gulp-concat");
+//var del = require('del');
 
-const vendorScripts = [
-    "node_modules/jquery/dist/jquery.min.js",
-    "node_modules/popper.js/dist/umd/popper.min.js",
-];
+var gulp = require("gulp");
+var browserify = require("browserify");
+var source = require('vinyl-source-stream');
+var tsify = require("tsify");
 
-gulp.task("build", ["clean", "build-vendor", "default"]);
-
-gulp.task("build-vendor", ["build-vendor-js"]);
-
-gulp.task("build-vendor-js", () => {
-    return gulp.src(vendorScripts)
-        .pipe(concat("vendor.min.js"))
-        .pipe(gulp.dest("wwwroot/scripts"));
+gulp.task("hello", function () {
+    console.log("hello");
 });
 
-var paths = {
-    scripts: ['TScript/**/*.js', 'TScript/**/*.ts', 'TScript/**/*.map'],
-};
-
-gulp.task('clean', function () {
-    return del(['wwwroot/scripts/**/*']);
-});
-
-gulp.task('default', function () {
-    gulp.src(paths.scripts).pipe(gulp.dest('wwwroot/scripts'))
-});
-
-gulp.task("default:watch", function () {
-    gulp.watch("TScript/**/*.ts", ["default"]);
+gulp.task("default", function () {
+    return browserify({
+        basedir: '.',
+        debug: true,
+        entries: ['TScript/Program.ts'],
+        cache: {},
+        packageCache: {}
+    })
+    .plugin(tsify)
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest("js"));
 });

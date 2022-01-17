@@ -1,4 +1,4 @@
-import { FighterCard } from "./FighterCard";
+import { FighterCard } from "../FighterCard";
 
 export class HeroCard extends FighterCard {
     constructor(name: string, motto: string) {

@@ -1,4 +1,4 @@
-import { ICard } from "./ICard";
+import { ICard } from "../Common/ICard";
 
 export class FighterCard implements ICard {
     protected $card: JQuery<HTMLElement>;

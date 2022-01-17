@@ -1,6 +1,6 @@
 import { FighterCard } from "./FighterCard";
 import { FighterPrototype } from "./FighterPrototype";
-import { Game } from "./Game";
+import { Game } from "../Main/Game";
 
 export class Fighter {
     private _hp: number;
