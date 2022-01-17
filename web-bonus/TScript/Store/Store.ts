@@ -42,7 +42,7 @@ export let store = {
                 $card.find(".text-warning").removeClass("text-warning");
             }),
 
-        new HeroPrototype(3, '<span class="bg-success text-light">Огурцан</span>', 200, 50, [1, 2, 3],
+        new HeroPrototype(3, '<span class="bg-success text-light">Огурцан</span>', 1000, 50, [1, 2, 3],
             'Пумпурумпум',
             'Не путать с Кукумбером!',
             'Тоже <span class="text-success">зелёный</span>, но не Кукумбер!',

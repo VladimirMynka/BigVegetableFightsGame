@@ -52,7 +52,12 @@ export class Perk {
     public getOnclick(): Function {
         return () => { 
             this.hero.setMethod(this.getOnclickType(), 
-            (target: Fighter) => { this.prototype.effect(target, this.hero, this._game) } 
+            (target: Fighter) => { 
+                this.mana = 0; 
+                this.prototype.effect(target, this.hero, this._game);
+                this._game.disactivateEnemies();
+                this.hero.disactivate(); 
+            } 
         )}
     }
 

@@ -1,6 +1,7 @@
 import { FighterCard } from "./FighterCard";
 import { FighterPrototype } from "./FighterPrototype";
 import { Game } from "../Main/Game";
+import { Util } from "../Common/Util";
 
 export class Fighter {
     private _hp: number;
@@ -13,6 +14,15 @@ export class Fighter {
         this._card = this.createCard(prototype);
         this._hp = prototype.hp;
         this._mana = prototype.mana;
+        this.update();
+    }
+
+    private async update(): Promise<void> {
+        if (this.hp === 0) return;
+        this.addMana(5);
+        this.addHp(2);
+        await Util.sleep(500);
+        await this.update();
     }
 
     protected createCard(prototype: FighterPrototype): FighterCard {
