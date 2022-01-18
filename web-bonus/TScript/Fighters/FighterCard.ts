@@ -57,4 +57,8 @@ export class FighterCard extends GameCard {
         this.$card.removeClass('border-primary');
         this.$card.removeClass('bg-light');
     }
+
+    public remove(): void {
+        this.$card.remove();
+    }
 }

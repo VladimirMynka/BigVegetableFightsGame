@@ -55,4 +55,10 @@ export class Hero extends Fighter {
     public sayManaLacking(): void {
         (<HeroCard>this.card).drawManaLacking();
     }
+
+    protected override remove(): void {
+        super.remove();
+        this.game.hero = null;
+        this.game._gameEnded = true;
+    }
 }

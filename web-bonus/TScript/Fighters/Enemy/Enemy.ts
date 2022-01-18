@@ -7,4 +7,9 @@ export class Enemy extends Fighter {
     protected override createCard(prototype: FighterPrototype): FighterCard {
         return new EnemyCard(prototype.name, prototype.motto);
     }
+
+    protected override remove(): void {
+        super.remove();
+        this.game.removeEnemy(this);
+    }
 }

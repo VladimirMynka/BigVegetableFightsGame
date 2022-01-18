@@ -5,6 +5,8 @@ import { Enemy } from "../Fighters/Enemy/Enemy";
 
 export class Game {
     private _heroNumber: number;
+    public _gameEnded: boolean;
+    private _killedEnemiesCount = 0;
 
     constructor() {
         this.initializeChoosenWindow();
@@ -59,7 +61,7 @@ export class Game {
     public hero: Hero;
     public enemies: Array<Enemy>;
 
-    onConfirm(): void {
+    private onConfirm(): void {
         $('#button').click();
         if (this._heroNumber === -1) {
             window.location.reload();
@@ -68,14 +70,31 @@ export class Game {
         this.hero = new Hero(store.heros[this._heroNumber], this);
         this.enemies = [];
         this.initializeEnemies();
+        this.update();
     }
 
-    initializeEnemies(): void {
+    private initializeEnemies(): void {
         for (let i = 0; i < 4; i++) this.addEnemy();
     }
 
-    addEnemy(): void {
+    private addEnemy(): void {
         this.enemies.push(new Enemy(store.enemies[Util.randomInt(0, store.enemies.length)], this));
+    }
+
+    public removeEnemy(enemy: Enemy): void {
+        this.enemies.splice(this.enemies.indexOf(enemy));
+        this._killedEnemiesCount++;
+    }
+
+    private async update() {
+        if (this._gameEnded) {
+            alert(`Game ended. You're kill ${this._killedEnemiesCount} enemies`);
+            return;
+        }
+        if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < 15)
+            this.addEnemy();
+        await Util.sleep(5000);
+        await this.update();
     }
 
     activateEnemies(effect: Function): void {

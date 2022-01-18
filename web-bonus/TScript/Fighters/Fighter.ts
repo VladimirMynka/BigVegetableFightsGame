@@ -18,11 +18,18 @@ export class Fighter {
     }
 
     private async update(): Promise<void> {
-        if (this.hp === 0) return;
+        if (this.hp === 0){
+            this.remove();
+            return;
+        }
         this.addMana(5);
         this.addHp(2);
         await Util.sleep(500);
         await this.update();
+    }
+
+    protected remove(): void {
+        this.card.remove();
     }
 
     protected createCard(prototype: FighterPrototype): FighterCard {

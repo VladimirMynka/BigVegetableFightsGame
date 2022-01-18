@@ -6,6 +6,7 @@ import { Util } from "../Common/Util";
 import { Game } from "../Main/Game";
 
 export let store = {
+    enemiesMaxCount: 8,
     heros: [
         new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 2, 4],
             'Всех закукумбрю!',
