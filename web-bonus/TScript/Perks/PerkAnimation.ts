@@ -12,7 +12,9 @@ export class PerkAnimation {
     ) {}
 
     public async animate(endpoint: IPoint) {
-        let $animation = $('.animation');
+        let $original = $('.animation');
+        let $animation = $original.clone().removeClass('animation');
+        $original.after($animation);
         $animation.removeClass('d-none');
         for (let index = 0; index < this.imagesPaths.length; index++) {
             let imagePath = this.imagesPaths[index];
@@ -23,6 +25,6 @@ export class PerkAnimation {
             });
             await Util.sleep(500 / this.imagesPaths.length);
         }
-        $animation.addClass('d-none');
+        $animation.remove();
     }
 }

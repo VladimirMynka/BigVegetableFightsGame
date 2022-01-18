@@ -81,8 +81,7 @@ export class Game {
         this.enemies.push(new Enemy(store.enemies[Util.randomInt(0, store.enemies.length)], this));
     }
 
-    public removeEnemy(enemy: Enemy): void {
-        this.enemies.splice(this.enemies.indexOf(enemy));
+    public increaseKilledCount(): void {
         this._killedEnemiesCount++;
     }
 
@@ -91,7 +90,7 @@ export class Game {
             alert(`Game ended. You're kill ${this._killedEnemiesCount} enemies`);
             return;
         }
-        if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < 15)
+        if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < store.addEnemyChance)
             this.addEnemy();
         this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
         await Util.sleep(5000);

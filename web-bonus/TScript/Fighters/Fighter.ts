@@ -14,10 +14,9 @@ export class Fighter {
         this.card = this.createCard(prototype);
         this._hp = prototype.hp;
         this._mana = prototype.mana;
-        this.update();
     }
 
-    private async update(): Promise<void> {
+    protected async update(): Promise<void> {
         if (this.hp === 0){
             this.remove();
             return;
@@ -45,8 +44,10 @@ export class Fighter {
         this.card.setHpWidth(this._hp * 100 / this.prototype.hp);
     }
 
-    public addHp(count: number): void {
+    public addHp(count: number): number {
+        let startHp = this._hp;
         this.hp = this._hp + count;
+        return this._hp - startHp;
     }
 
     private getAdequateHp(count: number): number {
@@ -64,8 +65,10 @@ export class Fighter {
         this.card.setManaWidth(this._mana * 100 / this.prototype.mana);
     }
 
-    public addMana(count: number): void {
+    public addMana(count: number): number {
+        let startMana = this._mana;
         this.mana = this._mana + count;
+        return this._mana - startMana;
     }
 
     private getAdequateMana(count: number): number {

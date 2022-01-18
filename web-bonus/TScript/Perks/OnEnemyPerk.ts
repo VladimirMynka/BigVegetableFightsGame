@@ -1,5 +1,5 @@
-import { Perk } from "./Perk";
+import { HeroPerk } from "./HeroPerk";
 
-export class OnEnemyPerk extends Perk {
+export class OnEnemyPerk extends HeroPerk {
 
 }

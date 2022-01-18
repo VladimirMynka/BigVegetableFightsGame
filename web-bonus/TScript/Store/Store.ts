@@ -4,13 +4,15 @@ import { PerkPrototype } from "../Perks/PerkPrototype";
 import { Fighter } from "../Fighters/Fighter";
 import { Util } from "../Common/Util";
 import { Game } from "../Main/Game";
+import { Enemy } from "../Fighters/Enemy/Enemy";
 
 const path = './images/animation/';
 
 export let store = {
-    enemiesMaxCount: 8,
+    enemiesMaxCount: 12,
+    addEnemyChance: 15,
     heros: [
-        new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 2, 4],
+        new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 2, 3, 4, 5, 6, 7, 8],
             'Всех закукумбрю!',
             '<span class="text-success">Зелёный</span>, пупырчатый, любит, когда его кусают',
             'Не <span class="text-danger">красный</span>! Не путать!',
@@ -63,44 +65,78 @@ export let store = {
     enemies: [
         new FighterPrototype(0, 'Редисон', 500, 100, [0, 1, 3],
             '<span class="text-danger border-danger">Ненавижу!</span>'),
-        new FighterPrototype(0, 'Баклажун', 500, 100, [0, 1, 3],
+        new FighterPrototype(0, 'Баклажун', 500, 100, [0, 1, 5, 7],
             'Агрх!'),
-        new FighterPrototype(0, 'Томатус', 500, 100, [0, 1, 3],
+        new FighterPrototype(0, 'Томатус', 500, 100, [0, 1, 5],
             'Упф'),
-        new FighterPrototype(0, 'Тыквин', 500, 100, [0, 1, 3],
+        new FighterPrototype(0, 'Тыквин', 500, 100, [0, 1, 4],
             '<span class="text-danger border-danger">Ехехеехех</span>'),
     ],
     perks: [
-        new PerkPrototype(-1, 'Пропуск хода', 1, '',
+        new PerkPrototype(0, 'Пропуск хода', 1, '',
             (target: Fighter, owner: Fighter, game: Game) => { }, true),
-        new PerkPrototype(0, 'Взрыв', 100, 'Пытается убить одного врага',
+
+        new PerkPrototype(1, 'Взрыв', 100, 'Пытается убить одного врага',
             (target: Fighter, owner: Fighter) => {
                 target.addHp(-100);
                 owner.addMana(-50);
             }, false,
             Array.apply(null, { length: 25 }).map((unused: any, index: number) =>
                 `${path}first/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
-        new PerkPrototype(1, 'Молния', 30, 'Пытается убить всех',
+
+        new PerkPrototype(2, 'Молния', 30, 'Пытается убить всех',
             (target: Fighter, owner: Fighter, game: Game) => {
                 owner.addMana(-100);
                 game.enemies.forEach((enemy) => (enemy.addHp(-70)));
             }, false,
             Array.apply(null, { length: 6 }).map((unused: any, index: number) =>
                 `${path}second/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
-        new PerkPrototype(2, 'Лечение', 50, 'Никого не пытается убить',
+
+        new PerkPrototype(3, 'Лечение', 50, 'Никого не пытается убить',
             (target: Fighter, owner: Fighter) => {
                 target.addHp(50);
                 owner.addMana(-50);
             }, true,
             Array.apply(null, { length: 13 }).map((unused: any, index: number) =>
                 `${path}third/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
-        new PerkPrototype(3, 'Жертва', 70, 'Пытается убить самого себя',
+
+        new PerkPrototype(4, 'Жертва', 70, 'Пытается убить самого себя',
             (target: Fighter, owner: Fighter) => {
                 target.addMana(50);
                 target.addHp(-50);
             }, true,
             Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
-                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`))
+                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+
+        new PerkPrototype(5, 'Кража жизни', 30, 'Пытается убить во благо',
+            (target: Fighter, owner: Fighter) => {
+                owner.addHp(-target.addHp(-50));
+            }, false,
+            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
+                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+
+        new PerkPrototype(6, 'Вихрь', 30, 'Пытается убить окружение врага',
+            (target: Fighter, owner: Fighter, game: Game) => {
+                let enemy = <Enemy>target;
+                enemy.addHp(-200);
+                let index = game.enemies.indexOf(enemy);
+                if (index > 0) game.enemies[index - 1].addHp(-100);
+                if (index < game.enemies.length - 1) game.enemies[index + 1].addHp(-100);
+            }, false,
+            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
+                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+
+        new PerkPrototype(7, 'Кража маны', 1, 'Пытается убить посредственно',
+            (target: Fighter, owner: Fighter, game: Game) => {
+                owner.addMana(-target.addMana(-200));
+            }, false,
+            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
+                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+
+        new PerkPrototype(8, 'Большой и глупый вред себе', 1, '(тестовое)',
+            (target: Fighter, owner: Fighter) => {
+                owner.addHp(-300);
+            }, true)
     ],
 };
 

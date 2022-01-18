@@ -3,14 +3,14 @@ import { HeroPrototype } from "./HeroPrototype";
 import { FighterPrototype } from "../FighterPrototype";
 import { HeroCard } from "./HeroCard";
 import { FighterCard } from "../FighterCard";
-import { Perk } from "../../Perks/Perk";
 import { OnHeroPerk } from "../../Perks/OnHeroPerk";
 import { OnEnemyPerk } from "../../Perks/OnEnemyPerk";
 import { Game } from "../../Main/Game";
 import { store } from "../../Store/Store";
+import { HeroPerk } from "../../Perks/HeroPerk";
 
 export class Hero extends Fighter {
-    private _perks: Array<Perk>;
+    private _perks: Array<HeroPerk>;
 
     constructor(
         prototype: HeroPrototype,
@@ -19,6 +19,7 @@ export class Hero extends Fighter {
         super(prototype, game);
         this._perks = []; 
         this.initializePerks();
+        this.update();
     }
 
     private initializePerks(): void {
