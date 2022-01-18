@@ -4,10 +4,12 @@ import { Hero } from "../Fighters/Hero/Hero";
 import { Util } from "../Common/Util";
 import { Fighter } from "../Fighters/Fighter";
 import { Game } from "../Main/Game";
+import { PerkAnimation } from "./PerkAnimation";
 
 export class Perk {
     private _card: PerkCard;
     private _mana: number;
+    private _animation?: PerkAnimation;
 
     constructor(
         protected prototype: PerkPrototype, 
@@ -17,6 +19,8 @@ export class Perk {
         this._card = this.createCard(prototype);
         this._card.setOnclick(this.getOnclick());
         this._mana = 0;
+        if (this.prototype.animationPaths != null)
+            this._animation = new PerkAnimation(this._card.getCoords(), prototype?.animationPaths);
         this.update();
     }
 
@@ -53,8 +57,19 @@ export class Perk {
         return () => { 
             this.hero.setMethod(this.getOnclickType(), 
             (target: Fighter) => { 
+                if (this.prototype.mana > this.hero.mana){
+                    this.hero.sayManaLacking();
+                    return;
+                }
                 this.mana = 0; 
-                this.prototype.effect(target, this.hero, this._game);
+
+                if (this._animation != null) 
+                    this._animation.animate(target.getCoords()).then(() => { 
+                        this.prototype.effect(target, this.hero, this._game); 
+                    });
+                else
+                    this.prototype.effect(target, this.hero, this._game); 
+                    
                 this._game.disactivateEnemies();
                 this.hero.disactivate(); 
             } 

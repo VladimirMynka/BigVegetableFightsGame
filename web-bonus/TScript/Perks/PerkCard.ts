@@ -1,12 +1,12 @@
-import { ICard } from "../Common/ICard";
+import { GameCard } from "../Common/GameCard";
 
-export class PerkCard implements ICard {
-    private _$card: JQuery<HTMLElement>;
+export class PerkCard extends GameCard {
     private _onclick: Function;
 
     constructor(name = "perk name", info = "info") {
-        this._$card = this.$initializeCard(name, info);
-        $('#hero-menu').append(this._$card);
+        super();
+        this.$card = this.$initializeCard(name, info);
+        $('#hero-menu').append(this.$card);
         this._onclick = null;
     }
 
@@ -25,7 +25,7 @@ export class PerkCard implements ICard {
 
     setProgressWidth(percents: number): void {
         percents = this.getRealPercents(percents);
-        this._$card.find('.mana-progress').width(percents + '%');
+        this.$card.find('.mana-progress').width(percents + '%');
         if (percents >= 100) this.turnOn();
         else this.turnOff();
     }
@@ -37,25 +37,25 @@ export class PerkCard implements ICard {
     }
 
     turnOn(): void {
-        this._$card.find('.mana-progress').removeClass('progress-bar-striped progress-bar-animated');
-        this._$card.on("click", () => {
+        this.$card.find('.mana-progress').removeClass('progress-bar-striped progress-bar-animated');
+        this.$card.on("click", () => {
             $('.perk-card').removeClass('border-primary');
-            this._$card.addClass('border-primary');
+            this.$card.addClass('border-primary');
             this._onclick();
         });
-        this._$card.on("mouseenter", () => {
-            this._$card.removeClass('bg-light');
+        this.$card.on("mouseenter", () => {
+            this.$card.removeClass('bg-light');
         });
-        this._$card.on("mouseleave", () => {
-            this._$card.addClass('bg-light');
+        this.$card.on("mouseleave", () => {
+            this.$card.addClass('bg-light');
         });
-        this._$card.attr('role', 'button');
+        this.$card.attr('role', 'button');
     }
 
-    turnOff(): void {
-        this._$card.find('.mana-progress').addClass('progress-bar-striped progress-bar-animated');
-        this._$card.off("click mouseenter mouseleave");
-        this._$card.attr('role', '');
-        this._$card.removeClass('border-primary');
+    public turnOff(): void {
+        this.$card.find('.mana-progress').addClass('progress-bar-striped progress-bar-animated');
+        this.$card.off("click mouseenter mouseleave");
+        this.$card.attr('role', '');
+        this.$card.removeClass('border-primary');
     }
 }

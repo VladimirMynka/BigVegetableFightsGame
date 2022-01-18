@@ -5,7 +5,8 @@ export class PerkPrototype {
         public mana: number,
         public info: string,
         public effect: Function,
-        public forSelf: boolean
+        public forSelf: boolean,
+        public animationPaths?: string[]
     ) {
     }
 }

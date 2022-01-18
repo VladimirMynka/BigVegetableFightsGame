@@ -51,4 +51,8 @@ export class Hero extends Fighter {
             this.activate(effect);
         };
     }
+
+    public sayManaLacking(): void {
+        (<HeroCard>this.card).drawManaLacking();
+    }
 }

@@ -1,9 +1,9 @@
+import { GameCard } from "../Common/GameCard";
 import { Fighter } from "./Fighter";
 
-export class FighterCard {
-    protected $card: JQuery<HTMLElement>;
-
+export class FighterCard extends GameCard {
     constructor(name = "enemy name", motto = "motto") {
+        super();
         this.$card = this.$initializeCard(name, motto);
         this.$getMenu().append(this.$card);
     }

@@ -6,12 +6,12 @@ import { Util } from "../Common/Util";
 export class Fighter {
     private _hp: number;
     private _mana: number;
-    private _card: FighterCard;
+    protected card: FighterCard;
 
     constructor(
         protected prototype: FighterPrototype, 
         protected game: Game) {
-        this._card = this.createCard(prototype);
+        this.card = this.createCard(prototype);
         this._hp = prototype.hp;
         this._mana = prototype.mana;
         this.update();
@@ -35,7 +35,7 @@ export class Fighter {
 
     public set hp(count: number) {
         this._hp = this.getAdequateHp(count);
-        this._card.setHpWidth(this._hp * 100 / this.prototype.hp);
+        this.card.setHpWidth(this._hp * 100 / this.prototype.hp);
     }
 
     public addHp(count: number): void {
@@ -54,7 +54,7 @@ export class Fighter {
 
     public set mana(count: number) {
         this._mana = this.getAdequateMana(count);
-        this._card.setManaWidth(this._mana * 100 / this.prototype.mana);
+        this.card.setManaWidth(this._mana * 100 / this.prototype.mana);
     }
 
     public addMana(count: number): void {
@@ -68,10 +68,14 @@ export class Fighter {
     }
 
     public activate(effect: Function): void {
-        this._card.turnOn(effect, this);
+        this.card.turnOn(effect, this);
     }
 
     public disactivate(): void {
-        this._card.turnOff();
+        this.card.turnOff();
+    }
+
+    public getCoords(): {left: number, top: number} {
+        return this.card.getCoords();
     }
 }
