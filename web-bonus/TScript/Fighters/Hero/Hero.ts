@@ -58,7 +58,6 @@ export class Hero extends Fighter {
 
     protected override remove(): void {
         super.remove();
-        this.game.hero = null;
         this.game._gameEnded = true;
     }
 }

@@ -93,6 +93,7 @@ export class Game {
         }
         if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < 15)
             this.addEnemy();
+        this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
         await Util.sleep(5000);
         await this.update();
     }

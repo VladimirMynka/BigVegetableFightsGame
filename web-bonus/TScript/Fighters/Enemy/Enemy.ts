@@ -10,6 +10,5 @@ export class Enemy extends Fighter {
 
     protected override remove(): void {
         super.remove();
-        this.game.removeEnemy(this);
     }
 }
