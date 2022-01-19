@@ -51,6 +51,9 @@ export class HeroPerk extends Perk {
                     else
                         this.prototype.effect(target, hero, this.game);
 
+                    this.game.addLog(this.owner, target, this.prototype.actionString);
+                    this.game.addScore(this.prototype.score);
+
                     this.game.disactivateEnemies();
                     hero.disactivate();
                 }

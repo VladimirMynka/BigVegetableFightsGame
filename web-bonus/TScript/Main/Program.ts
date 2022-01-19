@@ -7,6 +7,3 @@ function onLoad() {
 }
 
 $(window).on('load', onLoad);
-
-let _ = () => () => () => () => () => () => () => () => () => () => () => () => 
-'Nadoeli uzhe so svoimi skobkami prekratite pozhluista'

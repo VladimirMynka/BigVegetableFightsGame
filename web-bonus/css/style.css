@@ -1,0 +1,25 @@
+.scrolling-element {
+    max-height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: white black;
+}
+
+.small-scrolling-element {
+    max-height: 450px;
+}
+
+.scrolling-element::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.scrolling-element::-webkit-scrollbar-track {
+    background: white;
+}
+
+.scrolling-element::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 5px;
+    border: 3px solid black;
+}

@@ -10,6 +10,8 @@ export class PerkPrototype {
         public info: string,
         public effect: (target: Fighter, owner?: Fighter, game?: Game) => void,
         public forSelf: boolean,
+        public actionString: string,
+        public score: number,
         public animationPaths?: string[]
     ) {
     }

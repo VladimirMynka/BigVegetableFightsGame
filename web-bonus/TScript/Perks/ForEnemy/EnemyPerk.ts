@@ -27,6 +27,6 @@ export class EnemyPerk extends Perk {
             });
         else
             this.prototype.effect(target, this.owner, this.game);
-
+        this.game.addLog(this.owner, target, this.prototype.actionString)
     }
 }

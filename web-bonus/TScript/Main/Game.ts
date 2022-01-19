@@ -2,19 +2,23 @@ import { store } from "../Store/Store";
 import { Util } from "../Common/Util";
 import { Hero } from "../Fighters/Hero/Hero";
 import { Enemy } from "../Fighters/Enemy/Enemy";
+import { Fighter } from "../Fighters/Fighter";
 
 export class Game {
     private _heroNumber: number;
     public gameEnded: boolean;
+    public heroWon = true;
     private _killedEnemiesCount = 0;
     private _timeToEnd: number;
     public hero: Hero;
     public enemies: Array<Enemy>;
+    private _score = 0;
 
     constructor() {
         this.initializeChoosenWindow();
         $('#button').click();
-        $('#zakroysya').on('click', () => this.onConfirm());
+        $('#game-start-button').on('click', () => this.onConfirm());
+        $('#new-game-button').on('click', () => window.location.reload());
     }
 
     private initializeChoosenWindow(): void {
@@ -29,9 +33,9 @@ export class Game {
         let $container = $('#card-container');
         $container.html("");
         for (let i = 0; i < store.heros.length; i++) {
-            if (i === index) 
+            if (i === index)
                 $container.append($card);
-            else 
+            else
                 $container.append(this.initializeOneCard(i));
         }
     }
@@ -48,7 +52,7 @@ export class Game {
     }
 
     private chooseCardOnClick(index: number, $card: JQuery<HTMLElement>): void {
-        $('#hoho').removeClass('d-none');
+        $('#confirm-menu').removeClass('d-none');
         this.initializeChoosenWindowExcept(index, $card.parent());
         $card.addClass('border-primary');
         this._heroNumber = index;
@@ -57,7 +61,7 @@ export class Game {
 
     private setReaction(string: string, method?: Function, $card?: JQuery): void {
         $('#reaction').html(string);
-        if (typeof method === 'function') 
+        if (typeof method === 'function')
             method($card);
     }
 
@@ -84,11 +88,13 @@ export class Game {
 
     public increaseKilledCount(): void {
         this._killedEnemiesCount++;
+        $('#enemy-count').text(this._killedEnemiesCount);
+        this.addScore(1000);
     }
 
     private async update() {
         if (this.gameEnded) {
-            alert(`Game ended. You killed ${this._killedEnemiesCount} enemies`);
+            this.endGame();
             return;
         }
         if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < this.calculateAddingChance())
@@ -96,6 +102,15 @@ export class Game {
         this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
         await Util.sleep(5000);
         await this.update();
+    }
+
+    private endGame(): void {
+        let $endModal = $('#myModal2');
+        $endModal.find('.modal-title').text(this.heroWon ? "You won!" : "You lost...");
+        let $result = $('.progress-menu').clone().removeClass('col-8');
+        $result.find('.mt-5').removeClass('mt-5');
+        $endModal.find('.modal-body').append($result);
+        $('#button2').click();
     }
 
     private calculateAddingChance() {
@@ -114,7 +129,7 @@ export class Game {
     }
 
     private async doTick() {
-        if (this._timeToEnd <= 0){
+        if (this._timeToEnd <= 0) {
             this.gameEnded = true;
             return;
         }
@@ -129,5 +144,17 @@ export class Game {
 
     disactivateEnemies(): void {
         this.enemies.map((enemy) => { enemy.disactivate() });
+    }
+
+    addLog(maker: Fighter, target: Fighter, actionDescription: string): void {
+        let $actionLog = $(`<div>
+        ${Util.getFormatCurrentTime()} ${maker.prototype.name} ${actionDescription} ${target == maker ? '' : target.prototype.name}
+        </div>`);
+        $('#logs').prepend($actionLog);
+    }
+
+    addScore(count: number) {
+        this._score += count;
+        $('#score').text(this._score);
     }
 }

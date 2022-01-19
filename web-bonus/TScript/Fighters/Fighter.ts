@@ -11,7 +11,7 @@ export class Fighter {
     protected card: FighterCard;
 
     constructor(
-        protected prototype: FighterPrototype, 
+        public readonly prototype: FighterPrototype,
         protected game: Game) {
         this.card = this.createCard(prototype);
         this._hp = prototype.hp;
@@ -19,7 +19,7 @@ export class Fighter {
     }
 
     protected async update(): Promise<void> {
-        if (this.hp === 0){
+        if (this.hp === 0) {
             this.remove();
             return;
         }
@@ -31,6 +31,9 @@ export class Fighter {
 
     protected remove(): void {
         this.card.remove();
+        this.game.addLog(this, this, '<span class="text-danger">погиб</span>. Press F to pay respect');
+        document.removeEventListener('keydown', handler);
+        document.addEventListener('keydown', handler);
     }
 
     protected createCard(prototype: FighterPrototype): FighterCard {
@@ -93,5 +96,12 @@ export class Fighter {
 
     public getCoords(): IPoint {
         return this.card.getCoords();
+    }
+}
+
+function handler(event: any) {
+    if (event.code == 'KeyF') {
+        document.removeEventListener('keydown', handler);
+        Util.fireworks();
     }
 }

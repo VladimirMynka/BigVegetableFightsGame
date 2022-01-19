@@ -89,7 +89,7 @@ let store = {
 let heroNumber = -1;
 
 function hehe() {
-    $('#hoho').removeClass('d-none');
+    $('#confirm-menu').removeClass('d-none');
     $('.tick').removeClass('border-primary');
     this.classList.add('border-primary');
     heroNumber = this.dataset.heroId;
@@ -131,7 +131,7 @@ class Game {
         $('#button').click();
         $('.tick').on('click', hehe);
         $('.tack').on('click', hahah);
-        $('#zakroysya').on('click', () => this.onConfirm());
+        $('#game-start-button').on('click', () => this.onConfirm());
     }
 
     onConfirm() {
