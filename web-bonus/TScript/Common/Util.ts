@@ -24,4 +24,9 @@ export class Util {
             await Util.sleep(100);
         }
     }
+
+    public static getImagesPaths(number: number, count: number): string[] {
+        return Array.apply(null, { length: count }).map((unused: any, index: number) =>
+            `./images/animation/${number}/image_part_${(index + 1).toString().padStart(3, '0')}.png`)
+    }
 }
