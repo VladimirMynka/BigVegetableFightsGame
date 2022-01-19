@@ -6,6 +6,7 @@ export class PerkPrototype {
         public id: number,
         public name: string,
         public mana: number,
+        public fighterManaDemand: number,
         public info: string,
         public effect: (target: Fighter, owner?: Fighter, game?: Game) => void,
         public forSelf: boolean,

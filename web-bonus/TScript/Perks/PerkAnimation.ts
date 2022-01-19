@@ -1,13 +1,14 @@
+import { GameCard } from "../Common/GameCard";
 import { Util } from "../Common/Util";
 
-interface IPoint {
+export interface IPoint {
     left: number;
     top: number;
 } 
 
 export class PerkAnimation {
     constructor(
-        private startPoint: IPoint,
+        private startPointHandler: GameCard,
         private imagesPaths: Array<string> 
     ) {}
 
@@ -20,8 +21,8 @@ export class PerkAnimation {
             let imagePath = this.imagesPaths[index];
             $animation.attr('src', imagePath);
             $animation.offset({ 
-                left: this.startPoint.left + (endpoint.left - this.startPoint.left) * index / (this.imagesPaths.length),
-                top: this.startPoint.top + (endpoint.top - this.startPoint.top) * index / (this.imagesPaths.length)
+                left: this.startPointHandler.getCoords().left + (endpoint.left - this.startPointHandler.getCoords().left) * index / (this.imagesPaths.length),
+                top: this.startPointHandler.getCoords().top + (endpoint.top - this.startPointHandler.getCoords().top) * index / (this.imagesPaths.length)
             });
             await Util.sleep(500 / this.imagesPaths.length);
         }

@@ -5,8 +5,11 @@ import { Enemy } from "../Fighters/Enemy/Enemy";
 
 export class Game {
     private _heroNumber: number;
-    public _gameEnded: boolean;
+    public gameEnded: boolean;
     private _killedEnemiesCount = 0;
+    private _timeToEnd: number;
+    public hero: Hero;
+    public enemies: Array<Enemy>;
 
     constructor() {
         this.initializeChoosenWindow();
@@ -58,9 +61,6 @@ export class Game {
             method($card);
     }
 
-    public hero: Hero;
-    public enemies: Array<Enemy>;
-
     private onConfirm(): void {
         $('#button').click();
         if (this._heroNumber === -1) {
@@ -68,13 +68,14 @@ export class Game {
         };
 
         this.hero = new Hero(store.heros[this._heroNumber], this);
-        this.enemies = [];
         this.initializeEnemies();
         this.update();
+        this.initializeGameTimer();
     }
 
     private initializeEnemies(): void {
-        for (let i = 0; i < 4; i++) this.addEnemy();
+        this.enemies = [];
+        for (let i = 0; i < store.startEnemyCount; i++) this.addEnemy();
     }
 
     private addEnemy(): void {
@@ -86,15 +87,40 @@ export class Game {
     }
 
     private async update() {
-        if (this._gameEnded) {
-            alert(`Game ended. You're kill ${this._killedEnemiesCount} enemies`);
+        if (this.gameEnded) {
+            alert(`Game ended. You killed ${this._killedEnemiesCount} enemies`);
             return;
         }
-        if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < store.addEnemyChance)
+        if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < this.calculateAddingChance())
             this.addEnemy();
         this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
         await Util.sleep(5000);
         await this.update();
+    }
+
+    private calculateAddingChance() {
+        if (this.enemies.length === 0)
+            return 100;
+        let mc = store.enemiesMaxCount;
+        let tc = this.enemies.length;
+        let min = store.minAddEnemyChance;
+        let max = store.maxAddEnemyChance;
+        return (mc - tc) / mc * (max - min) + min;
+    }
+
+    private initializeGameTimer(): void {
+        this._timeToEnd = store.gameTiming * 60;
+        this.doTick();
+    }
+
+    private async doTick() {
+        if (this._timeToEnd <= 0){
+            this.gameEnded = true;
+            return;
+        }
+        this._timeToEnd--;
+        await Util.sleep(1000);
+        await this.doTick();
     }
 
     activateEnemies(effect: Function): void {

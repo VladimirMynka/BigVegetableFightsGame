@@ -2,6 +2,8 @@ import { FighterCard } from "./FighterCard";
 import { FighterPrototype } from "./FighterPrototype";
 import { Game } from "../Main/Game";
 import { Util } from "../Common/Util";
+import { GameCard } from "../Common/GameCard";
+import { IPoint } from "../Perks/PerkAnimation";
 
 export class Fighter {
     private _hp: number;
@@ -85,7 +87,11 @@ export class Fighter {
         this.card.turnOff();
     }
 
-    public getCoords(): {left: number, top: number} {
+    public getCard(): GameCard {
+        return this.card;
+    }
+
+    public getCoords(): IPoint {
         return this.card.getCoords();
     }
 }

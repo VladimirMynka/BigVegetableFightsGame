@@ -10,7 +10,10 @@ const path = './images/animation/';
 
 export let store = {
     enemiesMaxCount: 12,
-    addEnemyChance: 15,
+    minAddEnemyChance: 15,
+    maxAddEnemyChance: 35,
+    gameTiming: 3,
+    startEnemyCount: 1,
     heros: [
         new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 2, 3, 4, 5, 6, 7, 8],
             'Всех закукумбрю!',
@@ -73,49 +76,43 @@ export let store = {
             '<span class="text-danger border-danger">Ехехеехех</span>'),
     ],
     perks: [
-        new PerkPrototype(0, 'Пропуск хода', 1, '',
-            (target: Fighter, owner: Fighter, game: Game) => { }, true),
+        new PerkPrototype(0, 'Пропуск хода', 1, 0, '', () => { }, true),
 
-        new PerkPrototype(1, 'Взрыв', 100, 'Пытается убить одного врага',
-            (target: Fighter, owner: Fighter) => {
-                target.addHp(-100);
-                owner.addMana(-50);
-            }, false,
+        new PerkPrototype(1, 'Взрыв', 50, 20, 'Пытается убить одного врага',
+            (target: Fighter) => { target.addHp(-100) }, false,
             Array.apply(null, { length: 25 }).map((unused: any, index: number) =>
-                `${path}first/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+                `${path}1/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(2, 'Молния', 30, 'Пытается убить всех',
+        new PerkPrototype(2, 'Молния', 30, 50, 'Пытается убить всех',
             (target: Fighter, owner: Fighter, game: Game) => {
-                owner.addMana(-100);
                 game.enemies.forEach((enemy) => (enemy.addHp(-70)));
             }, false,
             Array.apply(null, { length: 6 }).map((unused: any, index: number) =>
-                `${path}second/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+                `${path}2/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(3, 'Лечение', 50, 'Никого не пытается убить',
+        new PerkPrototype(3, 'Лечение', 50, 50, 'Никого не пытается убить',
             (target: Fighter, owner: Fighter) => {
                 target.addHp(50);
-                owner.addMana(-50);
             }, true,
             Array.apply(null, { length: 13 }).map((unused: any, index: number) =>
-                `${path}third/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+                `${path}3/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(4, 'Жертва', 70, 'Пытается убить самого себя',
+        new PerkPrototype(4, 'Жертва', 70, 0, 'Пытается убить самого себя',
             (target: Fighter, owner: Fighter) => {
-                target.addMana(50);
+                target.addMana(100);
                 target.addHp(-50);
             }, true,
             Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
-                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+                `${path}4/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(5, 'Кража жизни', 30, 'Пытается убить во благо',
+        new PerkPrototype(5, 'Кража жизни', 30, 20, 'Пытается убить во благо',
             (target: Fighter, owner: Fighter) => {
                 owner.addHp(-target.addHp(-50));
             }, false,
-            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
-                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+            Array.apply(null, { length: 9 }).map((unused: any, index: number) =>
+                `${path}5/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(6, 'Вихрь', 30, 'Пытается убить окружение врага',
+        new PerkPrototype(6, 'Вихрь', 30, 50, 'Пытается убить окружение врага',
             (target: Fighter, owner: Fighter, game: Game) => {
                 let enemy = <Enemy>target;
                 enemy.addHp(-200);
@@ -123,17 +120,17 @@ export let store = {
                 if (index > 0) game.enemies[index - 1].addHp(-100);
                 if (index < game.enemies.length - 1) game.enemies[index + 1].addHp(-100);
             }, false,
-            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
-                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+            Array.apply(null, { length: 25 }).map((unused: any, index: number) =>
+                `${path}6/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(7, 'Кража маны', 1, 'Пытается убить посредственно',
+        new PerkPrototype(7, 'Кража маны', 100, 0, 'Пытается убить посредственно',
             (target: Fighter, owner: Fighter, game: Game) => {
                 owner.addMana(-target.addMana(-200));
             }, false,
-            Array.apply(null, { length: 20 }).map((unused: any, index: number) =>
-                `${path}fourth/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
+            Array.apply(null, { length: 26 }).map((unused: any, index: number) =>
+                `${path}7/image_part_0${(index + 1).toString().padStart(2, '0')}.png`)),
 
-        new PerkPrototype(8, 'Большой и глупый вред себе', 1, '(тестовое)',
+        new PerkPrototype(8, 'Большой и глупый вред себе', 1, 0, '(тестовое)',
             (target: Fighter, owner: Fighter) => {
                 owner.addHp(-300);
             }, true)

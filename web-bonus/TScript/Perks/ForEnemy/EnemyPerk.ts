@@ -1,8 +1,8 @@
-import { Enemy } from "../Fighters/Enemy/Enemy"
-import { Game } from "../Main/Game"
-import { Perk } from "./Perk"
-import { PerkAnimation } from "./PerkAnimation";
-import { PerkPrototype } from "./PerkPrototype"
+import { Enemy } from "../../Fighters/Enemy/Enemy"
+import { Game } from "../../Main/Game"
+import { Perk } from "../Perk"
+import { PerkAnimation } from "../PerkAnimation";
+import { PerkPrototype } from "../PerkPrototype"
 
 
 export class EnemyPerk extends Perk {
@@ -13,12 +13,12 @@ export class EnemyPerk extends Perk {
     ) {
         super(prototype, owner, game);
         if (this.prototype.animationPaths != null)
-            this.animation = new PerkAnimation(owner.getCoords(), prototype?.animationPaths);
+            this.animation = new PerkAnimation(owner.getCard(), prototype?.animationPaths);
         this.update();
     }
 
     public apply() {
-        if (this.mana < this.prototype.mana || this.owner.mana < this.mana)
+        if (this.mana < this.prototype.mana || this.owner.mana < this.prototype.fighterManaDemand)
             return;
         let target = this.prototype.forSelf ? this.owner : this.game.hero;
         if (this.animation != null)

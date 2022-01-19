@@ -3,11 +3,11 @@ import { HeroPrototype } from "./HeroPrototype";
 import { FighterPrototype } from "../FighterPrototype";
 import { HeroCard } from "./HeroCard";
 import { FighterCard } from "../FighterCard";
-import { OnHeroPerk } from "../../Perks/OnHeroPerk";
-import { OnEnemyPerk } from "../../Perks/OnEnemyPerk";
+import { OnHeroPerk } from "../../Perks/ForHero/OnHeroPerk";
+import { OnEnemyPerk } from "../../Perks/ForHero/OnEnemyPerk";
 import { Game } from "../../Main/Game";
 import { store } from "../../Store/Store";
-import { HeroPerk } from "../../Perks/HeroPerk";
+import { HeroPerk } from "../../Perks/ForHero/HeroPerk";
 
 export class Hero extends Fighter {
     private _perks: Array<HeroPerk>;
@@ -59,6 +59,6 @@ export class Hero extends Fighter {
 
     protected override remove(): void {
         super.remove();
-        this.game._gameEnded = true;
+        this.game.gameEnded = true;
     }
 }
