@@ -6,6 +6,16 @@ import { Util } from "../Common/Util";
 import { Game } from "../Main/Game";
 import { Enemy } from "../Fighters/Enemy/Enemy";
 
+type haha = {
+    a: number;
+    b: string;
+}
+
+interface hoho {
+    a: number;
+    b: string;
+}
+
 export let store = {
     enemiesMaxCount: 12,
     minAddEnemyChance: 15,
@@ -13,7 +23,7 @@ export let store = {
     gameTiming: 3,
     startEnemyCount: 1,
     diedLog: '<span class="text-danger">погиб.</span> Press F to pay respect',
-    heros: [
+    heroes: [
         new HeroPrototype(
             0, 
             'Кукумбер', 
@@ -33,7 +43,7 @@ export let store = {
         new HeroPrototype(
             1, 
             'Помидориус', 
-            300, 
+            750,
             200, 
             [0, 1, 3, 4],
             'Я краснею',
@@ -54,9 +64,9 @@ export let store = {
         new HeroPrototype(
             2, 
             'Дынчундук', 
-            500, 
-            100, 
-            [0, 1, 3],
+            1000,
+            70,
+            [0, 3, 6, 8],
             'Как я сюда попал',
             '<span class="text-warning">Жёлтый</span>, попал сюда случайно',
             'Не <span class="text-danger">зелёный</span>! Не <span class="text-success">красный</span>!',
@@ -70,14 +80,14 @@ export let store = {
         new HeroPrototype(
             3, 
             '<span class="bg-success text-light">Огурцан</span>', 
-            1000, 
-            50, 
-            [1, 2, 3],
+            400,
+            500,
+            [0, 3, 5, 7],
             'Пумпурумпум',
             'Не путать с Кукумбером!',
             'Тоже <span class="text-success">зелёный</span>, но не Кукумбер!',
             'Не вздумай сказать, что я <span class="text-success">Кукумбер</span>!',
-            ($card: JQuery<HTMLElement>) => {
+            () => {
                 Util.fireworks();
             }
         ),
@@ -85,20 +95,20 @@ export let store = {
         new HeroPrototype(
             4, 
             'Арбузон', 
-            500, 
+            800,
             100, 
-            [0, 1, 2],
+            [0, 2, 3, 6],
             'Пшпшпшп',
             'Самый <b>большой</b>',
             'Самый спелый',
-            '<span class="text-success">Потряси меня!</span>'
+            '<span class="text-success">Съешь меня?</span>'
         )
     ],
     enemies: [
         new FighterPrototype(
             0, 
             'Редисон', 
-            500, 
+            300, 
             100, 
             [0, 1, 3],
             '<span class="text-danger border-danger">Ненавижу!</span>'
@@ -106,8 +116,8 @@ export let store = {
         new FighterPrototype(
             0, 
             'Баклажун', 
-            500, 
-            100, 
+            400, 
+            80, 
             [0, 1, 5, 7],
             'Агрх!'
         ),
@@ -157,10 +167,12 @@ export let store = {
         new PerkPrototype(
             2, 
             'Молния', 
-            30, 
+            50, 
             50, 
             'Пытается убить всех',
             (target: Fighter, owner: Fighter, game: Game) => {
+                if(owner instanceof Enemy)
+                    game.enemies.forEach((enemy) => (enemy.addHp(10)));
                 game.enemies.forEach((enemy) => (enemy.addHp(-70)));
             }, 
             false, 
@@ -175,8 +187,8 @@ export let store = {
             50, 
             50, 
             'Никого не пытается убить',
-            (target: Fighter, owner: Fighter) => {
-                target.addHp(150);
+            (target: Fighter, _: Fighter) => {
+                target.addHp(250);
             }, 
             true, 
             'подлечился лечением', 
@@ -190,9 +202,9 @@ export let store = {
             70, 
             0, 
             'Пытается убить самого себя',
-            (target: Fighter, owner: Fighter) => {
-                target.addMana(100);
-                target.addHp(-50);
+            (target: Fighter) => {
+                target.addMana(150);
+                target.addHp(-30);
             }, 
             true, 
             'предпринял попытку суицида и восстановил манну', 
@@ -203,23 +215,23 @@ export let store = {
         new PerkPrototype(
             5, 
             'Кража жизни', 
-            30, 
+            50,
             20, 
             'Пытается убить во благо',
             (target: Fighter, owner: Fighter) => {
-                owner.addHp(-target.addHp(-50));
+                owner.addHp(-target.addHp(-75));
             }, 
             false, 
-            'отнял жизни у', 
-            30,
+            'украл здоровье у',
+            50,
             Util.getImagesPaths(5, 9)
         ),
 
         new PerkPrototype(
             6, 
             'Вихрь', 
-            30, 
-            50, 
+            100,
+            70,
             'Пытается убить окружение врага',
             (target: Fighter, owner: Fighter, game: Game) => {
                 let enemy = <Enemy>target;
@@ -240,8 +252,8 @@ export let store = {
             100, 
             0, 
             'Пытается убить посредственно',
-            (target: Fighter, owner: Fighter, game: Game) => {
-                owner.addMana(-target.addMana(-200));
+            (target: Fighter, owner: Fighter) => {
+                owner.addMana(-target.addMana(-100));
             }, 
             false, 
             'украл ману у', 

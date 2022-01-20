@@ -30,7 +30,7 @@ class PerkPrototype {
 }
 
 let store = {
-    heros: [
+    heroes: [
         new HeroPrototype(0, 'Кукумбер', 500, 100, [0, 1, 3],
             'Всех закукумбрю!',
             '<span class="text-success">Зелёный</span>, пупырчатый, любит, когда его кусают',
@@ -104,7 +104,7 @@ function hahah() {
 }
 
 function haha() {
-    $('#reaction').html(heroNumber === -1 ? "" : store.heros[heroNumber].answer)
+    $('#reaction').html(heroNumber === -1 ? "" : store.heroes[heroNumber].answer)
 }
 
 let game;
@@ -118,12 +118,12 @@ $(window).on('load', onLoad);
 class Game {
     constructor() {
         let $container = $('#card-container');
-        for (let i = 0; i < store.heros.length; i++) {
+        for (let i = 0; i < store.heroes.length; i++) {
             let $card = $('#choose-card').clone();
             $card.children('div').attr('data-hero-id', i);
-            $card.find('.my-title').html(store.heros[i].name);
-            $card.find('.my-first-description').html(store.heros[i].firstDescription);
-            $card.find('.my-second-description').html(store.heros[i].secondDescription);
+            $card.find('.my-title').html(store.heroes[i].name);
+            $card.find('.my-first-description').html(store.heroes[i].firstDescription);
+            $card.find('.my-second-description').html(store.heroes[i].secondDescription);
             $card.removeClass('d-none');
             $container.append($card);
 
@@ -140,10 +140,10 @@ class Game {
             window.location.reload();
         };
 
-        $('#hero-card').find('.my-title').html(store.heros[heroNumber].name);
-        $('#hero-card').find('.my-motto').html(store.heros[heroNumber].motto);
+        $('#hero-card').find('.my-title').html(store.heroes[heroNumber].name);
+        $('#hero-card').find('.my-motto').html(store.heroes[heroNumber].motto);
 
-        this.hero = new Hero(store.heros[heroNumber], this);
+        this.hero = new Hero(store.heroes[heroNumber], this);
         this.enemies = [];
         this.initializeEnemies();
     }
@@ -161,7 +161,7 @@ class Game {
     }
 
     disactivateEnemies(effect) {
-        this.enemies.map((enemy) => { enemy.disactivate(effect) });
+        this.enemies.map((enemy) => { enemy.deactivate(effect) });
     }
 
     apply(target) {

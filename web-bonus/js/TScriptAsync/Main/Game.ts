@@ -15,24 +15,24 @@ export class Game {
     private _score = 0;
 
     constructor() {
-        this.initializeChoosenWindow();
+        this.initializeChosenWindow();
         $('#button').click();
         $('#game-start-button').on('click', () => this.onConfirm());
         $('#new-game-button').on('click', () => window.location.reload());
     }
 
-    private initializeChoosenWindow(): void {
+    private initializeChosenWindow(): void {
         let $container = $('#card-container');
         $container.html("");
-        for (let i = 0; i < store.heros.length; i++) {
+        for (let i = 0; i < store.heroes.length; i++) {
             $container.append(this.initializeOneCard(i));
         }
     }
 
-    private initializeChoosenWindowExcept(index: number, $card: JQuery<HTMLElement>): void {
+    private initializeChosenWindowExcept(index: number, $card: JQuery<HTMLElement>): void {
         let $container = $('#card-container');
         $container.html("");
-        for (let i = 0; i < store.heros.length; i++) {
+        for (let i = 0; i < store.heroes.length; i++) {
             if (i === index)
                 $container.append($card);
             else
@@ -43,9 +43,9 @@ export class Game {
     private initializeOneCard(index: number) {
         let $card = $('#choose-card').clone();
         $card.children('div').attr('data-hero-id', index);
-        $card.find('.my-title').html(store.heros[index].name);
-        $card.find('.my-first-description').html(store.heros[index].firstDescription);
-        $card.find('.my-second-description').html(store.heros[index].secondDescription);
+        $card.find('.my-title').html(store.heroes[index].name);
+        $card.find('.my-first-description').html(store.heroes[index].firstDescription);
+        $card.find('.my-second-description').html(store.heroes[index].secondDescription);
         $card.removeClass('d-none');
         $card.on('click', () => { this.chooseCardOnClick(index, $card.find('.card')) });
         return $card;
@@ -53,10 +53,10 @@ export class Game {
 
     private chooseCardOnClick(index: number, $card: JQuery<HTMLElement>): void {
         $('#confirm-menu').removeClass('d-none');
-        this.initializeChoosenWindowExcept(index, $card.parent());
+        this.initializeChosenWindowExcept(index, $card.parent());
         $card.addClass('border-primary');
         this._heroNumber = index;
-        this.setReaction(store.heros[index].answer, store.heros[index]?.reaction, $card);
+        this.setReaction(store.heroes[index].answer, store.heroes[index]?.reaction, $card);
     }
 
     private setReaction(string: string, method?: Function, $card?: JQuery): void {
@@ -71,7 +71,7 @@ export class Game {
             window.location.reload();
         };
 
-        this.hero = new Hero(store.heros[this._heroNumber], this);
+        this.hero = new Hero(store.heroes[this._heroNumber], this);
         this.initializeEnemies();
         this.update();
         this.initializeGameTimer();
@@ -148,8 +148,8 @@ export class Game {
         this.enemies.map((enemy) => { enemy.activate(effect) });
     }
 
-    disactivateEnemies(): void {
-        this.enemies.map((enemy) => { enemy.disactivate() });
+    deactivateEnemies(): void {
+        this.enemies.map((enemy) => { enemy.deactivate() });
     }
 
     addLog(maker: Fighter, target: Fighter, actionDescription: string): void {
