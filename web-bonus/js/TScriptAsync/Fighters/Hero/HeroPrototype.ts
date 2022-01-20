@@ -8,10 +8,10 @@ export class HeroPrototype extends FighterPrototype {
         mana: number, 
         skills: Array<number>, 
         motto: string,
-        public firstDescription: string,
-        public secondDescription: string,
-        public answer: string,
-        public reaction?: ($card: JQuery<HTMLElement>) => void
+        public readonly firstDescription: string,
+        public readonly secondDescription: string,
+        public readonly answer: string,
+        public readonly reaction?: ($card: JQuery<HTMLElement>) => void
     ) {
         super(id, name, hp, mana, skills, motto);
     }

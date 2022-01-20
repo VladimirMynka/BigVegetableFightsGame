@@ -3,16 +3,16 @@ import { Game } from "../Main/Game";
 
 export class PerkPrototype {
     constructor(
-        public id: number,
-        public name: string,
-        public mana: number,
-        public fighterManaDemand: number,
-        public info: string,
-        public effect: (target: Fighter, owner?: Fighter, game?: Game) => void,
-        public forSelf: boolean,
-        public actionString: string,
-        public score: number,
-        public animationPaths?: string[]
+        public readonly id: number,
+        public readonly name: string,
+        public readonly mana: number,
+        public readonly fighterManaDemand: number,
+        public readonly info: string,
+        public readonly effect: (target: Fighter, owner?: Fighter, game?: Game) => void,
+        public readonly forSelf: boolean,
+        public readonly actionString: string,
+        public readonly score: number,
+        public readonly animationPaths?: string[]
     ) {
     }
 }

@@ -2,12 +2,12 @@
 
 export class FighterPrototype {
     constructor(
-        public id: number, 
-        public name: string, 
-        public hp: number, 
-        public mana: number, 
-        public skills: number[], 
-        public motto: string
+        public readonly id: number, 
+        public readonly name: string, 
+        public readonly hp: number, 
+        public readonly mana: number, 
+        public readonly skills: number[], 
+        public readonly motto: string
         ) {
     }
 }
