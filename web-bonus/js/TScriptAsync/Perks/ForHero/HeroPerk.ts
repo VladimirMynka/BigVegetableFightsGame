@@ -48,7 +48,6 @@ export abstract class HeroPerk extends Perk {
                     }
 
                     this.applyEffect(target);
-                    this.owner.moveEnded = true;
                 }
             )
         }
@@ -77,14 +76,5 @@ export abstract class HeroPerk extends Perk {
             this.game.disactivateEnemies();
             this.owner.activate(onClickFunction);
         };
-    }
-
-    public tryActivate(): void {
-        if (this.mana >= this.prototype.mana)
-            this._card.turnOn();
-    }
-
-    public deactivate(): void {
-        this._card.turnOff();
     }
 }

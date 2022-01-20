@@ -10,9 +10,8 @@ export let store = {
     enemiesMaxCount: 12,
     minAddEnemyChance: 15,
     maxAddEnemyChance: 35,
-    movesToWinning: 40,
+    gameTiming: 3,
     startEnemyCount: 1,
-    enemyMoveChance: 75,
     diedLog: '<span class="text-danger">погиб.</span> Press F to pay respect',
     heros: [
         new HeroPrototype(

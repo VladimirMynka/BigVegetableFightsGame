@@ -26,6 +26,8 @@ export class PerkCard extends GameCard {
     setProgressWidth(percents: number): void {
         percents = this.getRealPercents(percents);
         this.$card.find('.mana-progress').width(percents + '%');
+        if (percents >= 100) this.turnOn();
+        else this.turnOff();
     }
 
     getRealPercents(percents: number): number {

@@ -18,28 +18,16 @@ export class Enemy extends Fighter {
     }
 
     protected override initializePerks(): void {
-        if (this.prototype.skills.indexOf(0) < 0)
-            this.perks.push(new EnemyPerk(store.perks[0], this, this.game));
         this.prototype.skills.forEach(perkNumber => {
             this.perks.push(new EnemyPerk(store.perks[perkNumber], this, this.game));
         });
     }
 
-    public override async update(): Promise<void> {
+    protected override async update(): Promise<void> {
         if (this.game.gameEnded) return;
-        if(Util.randomInt(0, 100) < store.enemyMoveChance){
-            let index = Util.randomInt(1, this.perks.length);
-            while (index > 0 && !this.perks[index].canBeApplied())
-                index = this.increasePerkIndex(index);
-            this.perks[index].apply();
-        }
-        else
-            this.perks[0].apply();
+        if(Util.randomInt(0, 100) < 5)
+            this.perks[Util.randomInt(0, this.perks.length)].apply();
         super.update();
-    }
-
-    private increasePerkIndex(index: number): number {
-        return (index + 1) % this.perks.length;
     }
 
     protected override createCard(prototype: FighterPrototype): FighterCard {

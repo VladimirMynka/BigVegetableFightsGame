@@ -12,7 +12,6 @@ export abstract class Fighter {
     private _mana: number;
     protected card: FighterCard;
     protected perks: Perk[];
-    private _wereRemoved: boolean; 
 
     constructor(
         public readonly prototype: FighterPrototype,
@@ -23,22 +22,23 @@ export abstract class Fighter {
         this._mana = prototype.mana;
         this.perks = [];
         this.initializePerks();
+        this.update();
     }
 
     protected abstract initializePerks(): void;
 
-    public async update(): Promise<void> {
+    protected async update(): Promise<void> {
         if (this.hp === 0) {
+            this.remove();
             return;
         }
-        this.addMana(30);
-        this.addHp(10);
-        this.perks.forEach((perk) => perk.update())
+        this.addMana(5);
+        this.addHp(2);
+        await Util.sleep(500);
+        await this.update();
     }
 
     protected remove(): void {
-        if (this._wereRemoved) return;
-        this._wereRemoved = true;
         this.card.remove();
         this.game.addLog(this, this, store.diedLog);
         document.removeEventListener('keydown', handler);
@@ -56,8 +56,6 @@ export abstract class Fighter {
     public set hp(count: number) {
         this._hp = this.getAdequateHp(count);
         this.card.setHpWidth(this._hp * 100 / this.prototype.hp);
-        if(this._hp === 0)
-            this.remove();
     }
 
     public addHp(count: number): number {

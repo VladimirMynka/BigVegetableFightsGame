@@ -17,8 +17,10 @@ export class Perk {
         this._mana = 0;
     }
 
-    public async update(): Promise<void> {
-        this.addMana(20);
+    protected async update(): Promise<void> {
+        this.addMana(1);
+        await Util.sleep(100);
+        await this.update();
     }
 
     protected createCard(prototype: PerkPrototype): PerkCard {
@@ -63,7 +65,7 @@ export class Perk {
         this.game.addLog(this.owner, target, this.prototype.actionString);
     }
 
-    public canBeApplied(): boolean {
+    protected canBeApplied(): boolean {
         return this.mana >= this.prototype.mana && this.owner.mana >= this.prototype.fighterManaDemand;
     }
 }

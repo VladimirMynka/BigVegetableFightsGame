@@ -9,7 +9,7 @@ export class Game {
     public gameEnded: boolean;
     public heroWon = true;
     private _killedEnemiesCount = 0;
-    private _movesToEnd: number;
+    private _timeToEnd: number;
     public hero: Hero;
     public enemies: Array<Enemy>;
     private _score = 0;
@@ -73,8 +73,8 @@ export class Game {
 
         this.hero = new Hero(store.heros[this._heroNumber], this);
         this.initializeEnemies();
-        this._movesToEnd = store.movesToWinning;
         this.update();
+        this.initializeGameTimer();
     }
 
     private initializeEnemies(): void {
@@ -97,30 +97,11 @@ export class Game {
             this.endGame();
             return;
         }
-        this._movesToEnd--;
-        $('#moves-to-win').text(this._movesToEnd);
-        if (this._movesToEnd === 0)
-            this.gameEnded = true;
         if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < this.calculateAddingChance())
             this.addEnemy();
-        await this.moveHero();
-        await this.moveEnemies();
         this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
+        await Util.sleep(5000);
         await this.update();
-    }
-
-    private async moveEnemies() {
-        $('#move-of').html('<span class="text-danger">Enemies</span>');
-        for (let i = 0; i < this.enemies.length; i++) {
-            this.enemies[i].update();
-            await Util.sleep(500);
-        }
-    }
-
-    private async moveHero() {
-        $('#move-of').html('<span class="text-success">Hero</span>');
-        await this.hero.update();
-        await Util.sleep(1000);
     }
 
     private endGame(): void {
@@ -128,7 +109,6 @@ export class Game {
         $endModal.find('.modal-title').text(this.heroWon ? "You won!" : "You lost...");
         let $result = $('.progress-menu').clone().removeClass('col-8');
         $result.find('.mt-5').removeClass('mt-5');
-        $result.find('.must-be-deleted').remove();
         $endModal.find('.modal-body').append($result);
         $('#button2').click();
     }
@@ -141,6 +121,27 @@ export class Game {
         let min = store.minAddEnemyChance;
         let max = store.maxAddEnemyChance;
         return (mc - tc) / mc * (max - min) + min;
+    }
+
+    private initializeGameTimer(): void {
+        this._timeToEnd = store.gameTiming * 60;
+        this.doTick();
+    }
+
+    private async doTick() {
+        if (this._timeToEnd <= 0 || this.gameEnded) {
+            if (this._timeToEnd <= 0)
+                $('#time').removeClass('text-danger').addClass('text-success');
+            this.gameEnded = true;
+            return;
+        }
+        this._timeToEnd--;
+        let seconds = this._timeToEnd % 60;
+        $('#time').text(`${(this._timeToEnd - seconds) / 60}:${seconds.toString().padStart(2, '0')}`);
+        if(this._timeToEnd <= 30)
+            $('#time').addClass('text-danger');
+        await Util.sleep(1000);
+        await this.doTick();
     }
 
     activateEnemies(effect: Function): void {
