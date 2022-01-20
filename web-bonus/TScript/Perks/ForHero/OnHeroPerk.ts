@@ -1,8 +1,7 @@
-import { HeroPerk } from "./HeroPerk";
-import { Hero } from "../../Fighters/Hero/Hero";
+import { ActivationFunction, HeroPerk } from "./HeroPerk";
 
 export class OnHeroPerk extends HeroPerk {
-    public override getOnclickType(): Function {
-        return (<Hero>this.owner).getOnHeroMethod();
+    public override getActivator(): ActivationFunction {
+        return this.getOnHeroMethod();
     }
 }

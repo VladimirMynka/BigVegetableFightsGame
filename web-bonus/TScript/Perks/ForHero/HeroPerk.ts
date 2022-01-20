@@ -1,14 +1,20 @@
 import { PerkCard } from "../PerkCard";
 import { PerkPrototype } from "../PerkPrototype";
 import { Hero } from "../../Fighters/Hero/Hero";
-import { Util } from "../../Common/Util";
 import { Fighter } from "../../Fighters/Fighter";
 import { Game } from "../../Main/Game";
 import { PerkAnimation } from "../PerkAnimation";
 import { Perk } from "../Perk";
 
-export class HeroPerk extends Perk {
+type PerkCardOnClick = () => void;
+export type ForFighterCardOnClick = (target: Fighter) => void;
+export type ActivationFunction = (method: ForFighterCardOnClick) => void;
+
+
+export abstract class HeroPerk extends Perk {
     private _card: PerkCard;
+    protected override owner: Hero;
+
 
     constructor(
         prototype: PerkPrototype,
@@ -32,36 +38,43 @@ export class HeroPerk extends Perk {
         this._card.setProgressWidth(this.mana * 100 / this.prototype.mana);
     }
 
-    public getOnclick(): Function {
+    public getOnclick(): PerkCardOnClick {
         return () => {
-            let hero = <Hero>this.owner;
-            hero.setMethod(this.getOnclickType(),
+            this.getActivator()(
                 (target: Fighter) => {
-                    if (this.prototype.fighterManaDemand > hero.mana) {
-                        hero.sayManaLacking();
+                    if (this.prototype.fighterManaDemand > this.owner.mana) {
+                        this.owner.sayManaLacking();
                         return;
                     }
-                    this.mana = 0;
-                    hero.addMana(-this.prototype.fighterManaDemand);
 
-                    if (this.animation != null)
-                        this.animation.animate(target.getCoords()).then(() => {
-                            this.prototype.effect(target, hero, this.game);
-                        });
-                    else
-                        this.prototype.effect(target, hero, this.game);
-
-                    this.game.addLog(this.owner, target, this.prototype.actionString);
-                    this.game.addScore(this.prototype.score);
-
-                    this.game.disactivateEnemies();
-                    hero.disactivate();
+                    this.applyEffect(target);
                 }
             )
         }
     }
 
-    public getOnclickType(): Function {
-        return (<Hero>this.owner).getOnEnemyMethod();
+    protected override applyEffect(target: Fighter): void {
+        if (this.canBeApplied) {
+            super.applyEffect(target);
+            this.game.addScore(this.prototype.score);
+            this.game.disactivateEnemies();
+            this.owner.disactivate();
+        }
+    }
+
+    protected abstract getActivator(): ActivationFunction
+
+    protected getOnEnemyMethod(): ActivationFunction {
+        return (onClickFunction: ForFighterCardOnClick) => {
+            this.owner.disactivate();
+            this.game.activateEnemies(onClickFunction);
+        };
+    }
+
+    protected getOnHeroMethod(): ActivationFunction {
+        return (onClickFunction: ForFighterCardOnClick) => {
+            this.game.disactivateEnemies();
+            this.owner.activate(onClickFunction);
+        };
     }
 }

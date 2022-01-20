@@ -12,7 +12,7 @@ export class HeroPrototype extends FighterPrototype {
         public secondDescription: string,
         public answer: string,
         public reaction?: ($card: JQuery<HTMLElement>) => void
-        ) {
+    ) {
         super(id, name, hp, mana, skills, motto);
     }
 }

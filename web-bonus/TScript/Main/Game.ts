@@ -148,7 +148,7 @@ export class Game {
 
     addLog(maker: Fighter, target: Fighter, actionDescription: string): void {
         let $actionLog = $(`<div>
-        ${Util.getFormatCurrentTime()} ${maker.prototype.name} ${actionDescription} ${target == maker ? '' : target.prototype.name}
+        ${Util.getFormatCurrentTime()} <b>${maker.prototype.name}</b> ${actionDescription} <b>${target == maker ? '' : target.prototype.name}</b>
         </div>`);
         $('#logs').prepend($actionLog);
     }

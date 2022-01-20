@@ -4,19 +4,28 @@ import { Game } from "../Main/Game";
 import { Util } from "../Common/Util";
 import { GameCard } from "../Common/GameCard";
 import { IPoint } from "../Perks/PerkAnimation";
+import { Perk } from "../Perks/Perk";
+import { store } from "../Store/Store";
 
-export class Fighter {
+export abstract class Fighter {
     private _hp: number;
     private _mana: number;
     protected card: FighterCard;
+    protected perks: Perk[];
 
     constructor(
         public readonly prototype: FighterPrototype,
-        protected game: Game) {
+        protected game: Game
+    ) {
         this.card = this.createCard(prototype);
         this._hp = prototype.hp;
         this._mana = prototype.mana;
+        this.perks = [];
+        this.initializePerks();
+        this.update();
     }
+
+    protected abstract initializePerks(): void;
 
     protected async update(): Promise<void> {
         if (this.hp === 0) {
@@ -31,7 +40,7 @@ export class Fighter {
 
     protected remove(): void {
         this.card.remove();
-        this.game.addLog(this, this, '<span class="text-danger">погиб</span>. Press F to pay respect');
+        this.game.addLog(this, this, store.diedLog);
         document.removeEventListener('keydown', handler);
         document.addEventListener('keydown', handler);
     }

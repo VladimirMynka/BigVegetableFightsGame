@@ -10,10 +10,10 @@ export class Perk {
     protected animation?: PerkAnimation;
 
     constructor(
-        protected prototype: PerkPrototype, 
+        protected prototype: PerkPrototype,
         protected owner: Fighter,
         protected game: Game
-        ) {
+    ) {
         this._mana = 0;
     }
 
@@ -47,5 +47,25 @@ export class Perk {
         if (count < 0) return 0;
         if (count > this.prototype.mana) return this.prototype.mana;
         return count;
+    }
+
+    protected applyEffect(target: Fighter): void {
+        if (!this.canBeApplied())
+            return;
+
+        this.mana = 0;
+        this.owner.addMana(-this.prototype.fighterManaDemand);
+
+        if (this.animation != null)
+            this.animation.animate(target.getCoords()).then(() => {
+                this.prototype.effect(target, this.owner, this.game);
+            });
+        else
+            this.prototype.effect(target, this.owner, this.game);
+        this.game.addLog(this.owner, target, this.prototype.actionString);
+    }
+
+    protected canBeApplied(): boolean {
+        return this.mana >= this.prototype.mana && this.owner.mana >= this.prototype.fighterManaDemand;
     }
 }

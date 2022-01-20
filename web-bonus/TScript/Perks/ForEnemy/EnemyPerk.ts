@@ -18,15 +18,7 @@ export class EnemyPerk extends Perk {
     }
 
     public apply() {
-        if (this.mana < this.prototype.mana || this.owner.mana < this.prototype.fighterManaDemand)
-            return;
         let target = this.prototype.forSelf ? this.owner : this.game.hero;
-        if (this.animation != null)
-            this.animation.animate(target.getCoords()).then(() => {
-                this.prototype.effect(target, this.owner, this.game);
-            });
-        else
-            this.prototype.effect(target, this.owner, this.game);
-        this.game.addLog(this.owner, target, this.prototype.actionString)
+        this.applyEffect(target);
     }
 }
