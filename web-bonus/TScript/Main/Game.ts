@@ -105,7 +105,7 @@ export class Game {
             this.addEnemy();
         await this.moveHero();
         await this.moveEnemies();
-        this.enemies = this.enemies.filter((enemy) => enemy.hp > 0);
+        this.enemies = this.enemies.filter((enemy) => !enemy.wereRemoved);
         await this.update();
     }
 

@@ -34,6 +34,9 @@ export class Hero extends Fighter {
 
     public override async update() {
         super.update();
+	if (this.hp === 0 || this.wereRemoved) {
+            return;
+        }
         this.perks.forEach((perk) => perk.tryActivate());
         this.moveEnded = false;
         while (!this.moveEnded)

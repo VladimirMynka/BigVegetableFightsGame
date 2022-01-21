@@ -28,7 +28,7 @@ export abstract class Fighter {
     protected abstract initializePerks(): void;
 
     public async update(): Promise<void> {
-        if (this.hp === 0) {
+        if (this.hp === 0 || this._wereRemoved) {
             return;
         }
         this.addMana(30);
@@ -107,6 +107,10 @@ export abstract class Fighter {
 
     public getCoords(): IPoint {
         return this.card.getCoords();
+    }
+
+    public get wereRemoved(): boolean {
+        return this._wereRemoved;
     }
 }
 

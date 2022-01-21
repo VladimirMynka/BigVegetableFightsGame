@@ -27,6 +27,9 @@ export class Enemy extends Fighter {
 
     public override async update(): Promise<void> {
         if (this.game.gameEnded) return;
+	if (this.hp === 0 || this.wereRemoved) {
+            return;
+        }
         if(Util.randomInt(0, 100) < store.enemyMoveChance){
             let index = Util.randomInt(1, this.perks.length);
             while (index > 0 && !this.perks[index].canBeApplied())
