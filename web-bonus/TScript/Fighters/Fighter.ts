@@ -97,7 +97,7 @@ export abstract class Fighter {
         this.card.turnOn(effect, this);
     }
 
-    public disactivate(): void {
+    public deactivate(): void {
         this.card.turnOff();
     }
 

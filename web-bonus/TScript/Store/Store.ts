@@ -146,7 +146,7 @@ export let store = {
         new PerkPrototype(
             1,
             'Взрыв',
-            50,
+            30,
             20,
             'Пытается убить одного врага',
             (target: Fighter) => {

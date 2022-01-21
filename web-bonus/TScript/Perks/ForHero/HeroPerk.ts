@@ -58,8 +58,8 @@ export abstract class HeroPerk extends Perk {
         if (this.canBeApplied) {
             super.applyEffect(target);
             this.game.addScore(this.prototype.score);
-            this.game.disactivateEnemies();
-            this.owner.disactivate();
+            this.game.deactivateEnemies();
+            this.owner.deactivate();
         }
     }
 
@@ -67,14 +67,14 @@ export abstract class HeroPerk extends Perk {
 
     protected getOnEnemyMethod(): ActivationFunction {
         return (onClickFunction: ForFighterCardOnClick) => {
-            this.owner.disactivate();
+            this.owner.deactivate();
             this.game.activateEnemies(onClickFunction);
         };
     }
 
     protected getOnHeroMethod(): ActivationFunction {
         return (onClickFunction: ForFighterCardOnClick) => {
-            this.game.disactivateEnemies();
+            this.game.deactivateEnemies();
             this.owner.activate(onClickFunction);
         };
     }

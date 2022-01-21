@@ -15,13 +15,13 @@ export class Game {
     private _score = 0;
 
     constructor() {
-        this.initializeChoosenWindow();
+        this.initializeChosenWindow();
         $('#button').click();
         $('#game-start-button').on('click', () => this.onConfirm());
         $('#new-game-button').on('click', () => window.location.reload());
     }
 
-    private initializeChoosenWindow(): void {
+    private initializeChosenWindow(): void {
         let $container = $('#card-container');
         $container.html("");
         for (let i = 0; i < store.heroes.length; i++) {
@@ -29,7 +29,7 @@ export class Game {
         }
     }
 
-    private initializeChoosenWindowExcept(index: number, $card: JQuery<HTMLElement>): void {
+    private initializeChosenWindowExcept(index: number, $card: JQuery<HTMLElement>): void {
         let $container = $('#card-container');
         $container.html("");
         for (let i = 0; i < store.heroes.length; i++) {
@@ -53,13 +53,13 @@ export class Game {
 
     private chooseCardOnClick(index: number, $card: JQuery<HTMLElement>): void {
         $('#confirm-menu').removeClass('d-none');
-        this.initializeChoosenWindowExcept(index, $card.parent());
+        this.initializeChosenWindowExcept(index, $card.parent());
         $card.addClass('border-primary');
         this._heroNumber = index;
-        this.setReaction(store.heroes[index].answer, store.heroes[index]?.reaction, $card);
+        Game.setReaction(store.heroes[index].answer, store.heroes[index]?.reaction, $card);
     }
 
-    private setReaction(string: string, method?: Function, $card?: JQuery): void {
+    private static setReaction(string: string, method?: Function, $card?: JQuery): void {
         $('#reaction').html(string);
         if (typeof method === 'function')
             method($card);
@@ -104,7 +104,9 @@ export class Game {
         if (this.enemies.length < store.enemiesMaxCount && Util.randomInt(0, 100) < this.calculateAddingChance())
             this.addEnemy();
         await this.moveHero();
+        await Util.sleep(1000);
         await this.moveEnemies();
+        await Util.sleep(1000);
         this.enemies = this.enemies.filter((enemy) => !enemy.wereRemoved);
         await this.update();
     }
@@ -112,7 +114,7 @@ export class Game {
     private async moveEnemies() {
         $('#move-of').html('<span class="text-danger">Enemies</span>');
         for (let i = 0; i < this.enemies.length; i++) {
-            this.enemies[i].update();
+            await this.enemies[i].update();
             await Util.sleep(500);
         }
     }
@@ -120,7 +122,6 @@ export class Game {
     private async moveHero() {
         $('#move-of').html('<span class="text-success">Hero</span>');
         await this.hero.update();
-        await Util.sleep(1000);
     }
 
     private endGame(): void {
@@ -147,8 +148,8 @@ export class Game {
         this.enemies.map((enemy) => { enemy.activate(effect) });
     }
 
-    disactivateEnemies(): void {
-        this.enemies.map((enemy) => { enemy.disactivate() });
+    deactivateEnemies(): void {
+        this.enemies.map((enemy) => { enemy.deactivate() });
     }
 
     addLog(maker: Fighter, target: Fighter, actionDescription: string): void {

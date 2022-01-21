@@ -160,7 +160,7 @@ class Game {
         this.enemies.map((enemy) => { enemy.activate(effect) });
     }
 
-    disactivateEnemies(effect) {
+    deactivateEnemies(effect) {
         this.enemies.map((enemy) => { enemy.deactivate(effect) });
     }
 
@@ -342,7 +342,7 @@ class Fighter {
         this.card.turnOn();
     }
 
-    disactivate() {
+    deactivate() {
         this.card.turnOff();
     }
 }
@@ -381,14 +381,14 @@ class Hero extends Fighter {
 
     getOnEnemyMethod() {
         return () => {
-            this.disactivate();
+            this.deactivate();
             this.game.activateEnemies();
         };
     }
 
     getOnHeroMethod() {
         return () => {
-            this.game.disactivateEnemies();
+            this.game.deactivateEnemies();
             this.activate();
         };
     }
