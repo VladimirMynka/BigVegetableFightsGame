@@ -6,14 +6,36 @@ import { Util } from "../Common/Util";
 import { Game } from "../Main/Game";
 import { Enemy } from "../Fighters/Enemy/Enemy";
 
-type haha = {
-    a: number;
-    b: string;
+function parseHero(json: any): HeroPrototype {
+    return new HeroPrototype(
+        json.id,
+        json.name,
+        json.hp,
+        json.mana,
+        json.skills,
+        json.motto,
+        json.firstDescription,
+        json.secondDescription,
+        json.answer,
+        ($card) => { Function('$card', json.reaction)($card) }
+    )
 }
 
-interface hoho {
-    a: number;
-    b: string;
+function parsePerk(json: any): PerkPrototype {
+    return new PerkPrototype(
+        json.id,
+        json.name,
+        json.mana,
+        json.fighterManaDemand,
+        json.info,
+        (target, owner, game) => {
+            Function('target, owner', 'game', json.effect)(target, owner, game);
+        },
+        json.forSelf,
+        json.actionString,
+        json.score,
+        json.countOfImages != null ? Util.getImagesPaths(json.id, json.countOfImages) : null
+    )
 }
 
 export let store = {

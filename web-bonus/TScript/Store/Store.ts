@@ -5,8 +5,68 @@ import {Fighter} from "../Fighters/Fighter";
 import {Util} from "../Common/Util";
 import {Game} from "../Main/Game";
 import {Enemy} from "../Fighters/Enemy/Enemy";
+import {storeJSON} from "../Main/Program";
 
-export let store = {
+
+interface Store {
+    enemiesMaxCount: number,
+    minAddEnemyChance: number,
+    maxAddEnemyChance: number,
+    movesToWinning: number,
+    startEnemyCount: number,
+    enemyMoveChance: number,
+    diedLog: string,
+    heroes: HeroPrototype[],
+    enemies: FighterPrototype[],
+    perks: PerkPrototype[]
+}
+
+// export let store: Store = {
+//     enemiesMaxCount: storeJSON.enemiesMaxCount,
+//     minAddEnemyChance: storeJSON.minAddEnemyChance,
+//     maxAddEnemyChance: storeJSON.maxAddEnemyChance,
+//     movesToWinning: storeJSON.movesToWinning,
+//     startEnemyCount: storeJSON.startEnemyCount,
+//     enemyMoveChance: storeJSON.enemyMoveChance,
+//     diedLog: storeJSON.diedLog,
+//     heroes: storeJSON.heroes.map((jsonHero) => parseHero(jsonHero)),
+//     enemies: storeJSON.enemies,
+//     perks: storeJSON.perks.map((jsonPerk) => parsePerk(jsonPerk))
+// }
+
+function parseHero(json: any): HeroPrototype {
+    return new HeroPrototype(
+        json.id,
+        json.name,
+        json.hp,
+        json.mana,
+        json.skills,
+        json.motto,
+        json.firstDescription,
+        json.secondDescription,
+        json.answer,
+        ($card) => { Function('$card', json.reaction)($card) }
+    )
+}
+
+function parsePerk(json: any): PerkPrototype {
+    return new PerkPrototype(
+        json.id,
+        json.name,
+        json.mana,
+        json.fighterManaDemand,
+        json.info,
+        (target, owner, game) => {
+            Function('target, owner', 'game', json.effect)(target, owner, game);
+        },
+        json.forSelf,
+        json.actionString,
+        json.score,
+        json.countOfImages != null ? Util.getImagesPaths(json.id, json.countOfImages) : null
+    )
+}
+
+export let store: Store = {
     enemiesMaxCount: 12,
     minAddEnemyChance: 15,
     maxAddEnemyChance: 35,
