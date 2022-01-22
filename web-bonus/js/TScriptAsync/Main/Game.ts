@@ -3,6 +3,7 @@ import { Util } from "../Common/Util";
 import { Hero } from "../Fighters/Hero/Hero";
 import { Enemy } from "../Fighters/Enemy/Enemy";
 import { Fighter } from "../Fighters/Fighter";
+import {FighterPrototype} from "../../../TScript/Fighters/FighterPrototype";
 
 export class Game {
     private _heroNumber: number;
@@ -82,8 +83,13 @@ export class Game {
         for (let i = 0; i < store.startEnemyCount; i++) this.addEnemy();
     }
 
-    private addEnemy(): void {
-        this.enemies.push(new Enemy(store.enemies[Util.randomInt(0, store.enemies.length)], this));
+    public addEnemy(): void {
+        if(arguments.length == 0)
+            this.enemies.push(new Enemy(store.enemies[Util.randomInt(0, store.enemies.length)], this));
+        else if(typeof arguments[0] === 'number')
+            this.enemies.push(new Enemy(store.enemies[arguments[0]], this));
+        else if(arguments[0] instanceof FighterPrototype)
+            this.enemies.push(new Enemy(arguments[0], this));
     }
 
     public increaseKilledCount(): void {

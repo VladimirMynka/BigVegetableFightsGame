@@ -6,4 +6,8 @@ export class GameCard {
     public getCoords(): {left: number, top: number} {
         return this.$card.offset();
     }
+
+    public getCard(): JQuery<HTMLElement> {
+        return this.$card;
+    }
 }
