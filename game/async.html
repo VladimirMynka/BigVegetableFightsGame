@@ -1,0 +1,118 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <title>Web-Bonus</title>
+</head>
+
+<body>
+    <img src="images/animation/1/image_part_001.png" class="d-none animation position-absolute"
+        style="left: 50px; z-index: 15;" />
+    <img src="images/fireworks.png" class="fireworks d-none position-absolute" style="z-index: 9999;" />
+
+    <div id="myModal" class="modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose your fighter</h5>
+                    <a role="button" class="btn btn-dark" href="index.html">This is async version</a>
+                </div>
+                <div class="modal-body container">
+                    <div id="card-container" class="row align-items-center justify-content-center">
+                    </div>
+                    <div class="row align-items-end">
+                        <div id="reaction" class="col-12"></div>
+                    </div>
+                </div>
+                <div id="confirm-menu" class="modal-footer d-none">
+                    <button id="game-start-button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal2" class="modal" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Your result:</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button id="new-game-button" class="btn btn-primary">New game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="button" class="d-none" data-toggle="modal" data-target="#myModal">Hahaha</button>
+    <button id="button2" class="d-none" data-toggle="modal" data-target="#myModal2">Hahaha</button>
+
+    <div id="choose-card" class="col-4 d-none none-selecting-text">
+        <div class="tick card text-center" role="button" data-hero-id="0">
+            <div class="card-body">
+                <h5 class="my-title card-title">Хахахахаха</h5>
+                <div class="my-first-description text-muted font-weight-bold">Хоохохох</div>
+                <div class="my-second-description">атолтилотиолиаолттолиа</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fighter-card" class="card mt-2 d-none enemy-card none-selecting-text">
+        <div class="card-body">
+            <h5 class="card-title my-title">Enemy name</h5>
+            <div class="my-motto">Description</div>
+            <div class="progress mt-3">
+                <div class="progress-bar hp-progress bg-danger" style="width: 100%" role="progressbar"></div>
+            </div>
+            <div class="progress mt-1">
+                <div class="progress-bar mana-progress bg-primary" style="width: 100%" role="progressbar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="perk-card" class="card mt-2 d-none perk-card none-selecting-text">
+        <div class="card-body">
+            <h5 class="card-title my-title">Perk name</h5>
+            <div class="my-info">Info</div>
+            <div class="progress mt-1">
+                <div class="progress-bar progress-bar-striped bg-primary mana-progress" style="width: 0%"
+                    role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div id="hero-menu" class="col-2 scrolling-element"></div>
+            <div class="col-8 progress-menu" >
+                <div class="card mt-5">
+                    <div class="card-header">Progress:</div>
+                    <div class="card-body">
+                        <div><b>Score: </b><span id="score">0</span></div>
+                        <div><b>Killed enemies count: </b><span id="enemy-count">0</span></div>
+                        <div><b>Time to winning: </b><span id="time">0:00</span></div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header">Logs:</div>
+                    <div class="card-body">
+                        <div id="logs" class="scrolling-element small-scrolling-element">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="enemies-menu" class="col-2 scrolling-element"></div>
+        </div>
+    </div>
+
+    <script src="bootstrap/jQuery.js"></script>
+    <script src="bootstrap/bootstrap.min.js"></script>
+    <script src="store.json"></script>
+    <script src="js/async.js"></script>
+</body>
+
+</html>

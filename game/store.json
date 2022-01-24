@@ -1,0 +1,225 @@
+data = `{
+    "enemiesMaxCount": 12,
+    "minAddEnemyChance": 15,
+    "maxAddEnemyChance": 35,
+    "movesToWinning": 40,
+    "startEnemyCount": 1,
+    "enemyMoveChance": 75,
+    "gameTiming": 3,
+    "diedLog": "<span class='text-danger'>погиб.</span> Press F to pay respect",
+    "heroes": [
+        {
+            "id": 0,
+            "name": "Кукумбер",
+            "hp": 500,
+            "mana": 100,
+            "skills": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            "motto": "Всех закукумбрю!",
+            "firstDescription": "<span class='text-success'>Зелёный</span>, пупырчатый, любит, когда его кусают",
+            "secondDescription": "Не <span class='text-danger'>красный</span>! Не путать!",
+            "answer": "Хохо, хехей! Я тебя <span class='text-success'>закукумбрю</span>!",
+            "reaction": "{$card.addClass('bg-success text-white'); $card.find('span').removeClass().addClass('text-dark');}"
+        },
+        {
+            "id": 1,
+            "name": "Помидориус",
+            "hp": 750,
+            "mana": 200,
+            "skills": [0, 1, 3, 4],
+            "motto": "Я краснею",
+            "firstDescription": "<span class='text-danger'>Красный</span>, гладкий, твой",
+            "secondDescription": "Не <span class='text-success'>зелёный</span>! Не путать!",
+            "answer": "Ахахахахахахахаххахахахахах",
+            "reaction": "{$card.parent().parent().children().children().addClass('bg-transparent');$card.addClass('bg-light text-dark');$card.removeClass('bg-transparent');$card.parent().parent().parent().parent().addClass('bg-dark text-white');Util.sleep(2000).then(() => {$card.parent().parent().parent().parent().removeClass('bg-dark text-white');});}"
+        },
+        {
+            "id": 2,
+            "name": "Дынчундук",
+            "hp": 1000,
+            "mana": 70,
+            "skills": [0, 3, 6, 8],
+            "motto": "Как я сюда попал",
+            "firstDescription": "<span class='text-warning'>Жёлтый</span>, попал сюда случайно",
+            "secondDescription": "Не <span class='text-danger'>зелёный</span>! Не <span class='text-success'>красный</span>!",
+            "answer": "Молю тебя!",
+            "reaction": "{$card.addClass('bg-warning');$card.find('.text-warning').removeClass('text-warning');}"
+        },
+        {
+            "id": 3,
+            "name": "<span class='bg-success text-light'>Огурцан</span>",
+            "hp": 400,
+            "mana": 500,
+            "skills": [0, 3, 5, 7],
+            "motto": "Пумпурумпум",
+            "firstDescription": "Не путать с Кукумбером!",
+            "secondDescription": "Тоже <span class='text-success'>зелёный</span>, но не Кукумбер!",
+            "answer": "Не вздумай сказать, что я <span class='text-success'>Кукумбер</span>!",
+            "reaction": "{Util.fireworks();}"
+        },
+        {
+            "id": 4,
+            "name": "Арбузон",
+            "hp": 800,
+            "mana": 100,
+            "skills": [0, 2, 3, 6],
+            "motto": "Пшпшпшп",
+            "firstDescription": "Самый <b>большой</b>",
+            "secondDescription": "Самый спелый",
+            "answer": "<span class='text-success'>Съешь меня</span>"
+        },
+        {
+            "id": 5,
+            "name": "Арбузун",
+            "hp": 800,
+            "mana": 100,
+            "skills": [0, 2, 3, 6],
+            "motto": "Шпшпшпш",
+            "firstDescription": "Типа Арбузон",
+            "secondDescription": "Но только Арбузун",
+            "answer": "<span class='text-warning'>Я невидимка</span>",
+            "reaction": "{$card.remove()}"
+        }
+    ],
+    "enemies": [
+        {
+            "id": 0,
+            "name": "Редисон",
+            "hp": 300,
+            "mana": 100,
+            "skills": [0, 1, 3],
+            "motto": "<span class='text-danger border-danger'>Ненавижу!</span>"
+        },
+        {
+            "id": 1,
+            "name": "Баклажун",
+            "hp": 400,
+            "mana": 80,
+            "skills": [0, 1, 5, 7],
+            "motto": "Агрх!"
+        },
+        {
+            "id": 2,
+            "name": "Томатус",
+            "hp": 500,
+            "mana": 100,
+            "skills": [0, 1, 5],
+            "motto": "Упф"
+        },
+        {
+            "id": 1,
+            "name": "Тыквин",
+            "hp": 500,
+            "mana": 100,
+            "skills": [0, 1, 4],
+            "motto": "<span class='text-danger border-danger'>Ехехеехех</span>"
+        }
+    ],
+    "perks": [
+        {
+            "id": 0,
+            "name": "Пропуск хода",
+            "mana": 1,
+            "fighterManaDemand": 0,
+            "info": "",
+            "effect": "{}",
+            "forSelf": true,
+            "actionString": "пропустил ход",
+            "score": 0
+        },
+        {
+            "id": 1,
+            "name": "Взрыв",
+            "mana": 30,
+            "fighterManaDemand": 20,
+            "info": "Пытается убить одного врага",
+            "effect": "{target.addHp(-100)}",
+            "forSelf": false,
+            "actionString": "бахнул взрывом по",
+            "score": 50,
+            "countOfImages": 25
+        },
+        {
+            "id": 2,
+            "name": "Молния",
+            "mana": 50,
+            "fighterManaDemand": 50,
+            "info": "Пытается убить всех",
+            "effect": "{game.enemies.forEach((enemy) => (enemy.addHp(-70)));}",
+            "forSelf": false,
+            "actionString": "бахнул молнией по всем, в том числе по",
+            "score": 120,
+            "countOfImages": 6
+        },
+        {
+            "id": 3,
+            "name": "Лечение",
+            "mana": 50,
+            "fighterManaDemand": 50,
+            "info": "Никого не пытается убить",
+            "effect": "{target.addHp(250);}",
+            "forSelf": true,
+            "actionString": "подлечился лечением",
+            "score": 50,
+            "countOfImages": 13
+        },
+        {
+            "id": 4,
+            "name": "Жертва",
+            "mana": 70,
+            "fighterManaDemand": 0,
+            "info": "Пытается убить самого себя",
+            "effect": "{target.addMana(150);target.addHp(-30);}",
+            "forSelf": true,
+            "actionString": "предпринял попытку суицида и восстановил манну",
+            "score": 50,
+            "countOfImages": 20
+        },
+        {
+            "id": 5,
+            "name": "Кража жизни",
+            "mana": 50,
+            "fighterManaDemand": 20,
+            "info": "Пытается убить во благо",
+            "effect": "{owner.addHp(-target.addHp(-75));}",
+            "forSelf": false,
+            "actionString": "украл здоровье у",
+            "score": 50,
+            "countOfImages": 9
+        },
+        {
+            "id": 6,
+            "name": "Вихрь",
+            "mana": 100,
+            "fighterManaDemand": 70,
+            "info": "Пытается убить окружение врага",
+            "effect": "{let enemy = target;enemy.addHp(-200);let index = game.enemies.indexOf(enemy);if (index > 0) game.enemies[index - 1].addHp(-100);if (index < game.enemies.length - 1) game.enemies[index + 1].addHp(-100);}",
+            "forSelf": false,
+            "actionString": "бахнул вихрем по соседям, да и по самому",
+            "score": 120,
+            "countOfImages": 25
+        },
+        {
+            "id": 7,
+            "name": "Кража маны",
+            "mana": 100,
+            "fighterManaDemand": 0,
+            "info": "Пытается убить посредственно",
+            "effect": "{owner.addMana(-target.addMana(-100));}",
+            "forSelf": false,
+            "actionString": "украл ману у",
+            "score": 50,
+            "countOfImages": 26
+        },
+        {
+            "id": 8,
+            "name": "Большой и глупый вред себе",
+            "mana": 1,
+            "fighterManaDemand": 0,
+            "info": "(тестовое)",
+            "effect": "{owner.addHp(-300);owner.addMana(-300);}",
+            "forSelf": true,
+            "actionString": "очень глупый",
+            "score": 500
+        }
+    ]
+}`;
