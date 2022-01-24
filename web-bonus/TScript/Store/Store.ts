@@ -21,7 +21,8 @@ interface Store {
     perks: PerkPrototype[]
 }
 
-// export let store: Store = {
+// var storeJSON = JSON.parse(data);
+// exports.store = {
 //     enemiesMaxCount: storeJSON.enemiesMaxCount,
 //     minAddEnemyChance: storeJSON.minAddEnemyChance,
 //     maxAddEnemyChance: storeJSON.maxAddEnemyChance,

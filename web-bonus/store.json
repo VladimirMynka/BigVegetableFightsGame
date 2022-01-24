@@ -66,6 +66,18 @@ data = `{
             "firstDescription": "Самый <b>большой</b>",
             "secondDescription": "Самый спелый",
             "answer": "<span class='text-success'>Съешь меня</span>"
+        },
+        {
+            "id": 5,
+            "name": "Арбузун",
+            "hp": 800,
+            "mana": 100,
+            "skills": [0, 2, 3, 6],
+            "motto": "Шпшпшпш",
+            "firstDescription": "Типа Арбузон",
+            "secondDescription": "Но только Арбузун",
+            "answer": "<span class='text-warning'>Я невидимка</span>",
+            "reaction": "{$card.remove()}"
         }
     ],
     "enemies": [

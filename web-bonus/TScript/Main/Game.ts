@@ -4,6 +4,7 @@ import { Hero } from "../Fighters/Hero/Hero";
 import { Enemy } from "../Fighters/Enemy/Enemy";
 import { Fighter } from "../Fighters/Fighter";
 import {FighterPrototype} from "../Fighters/FighterPrototype";
+import {HeroPrototype} from "../Fighters/Hero/HeroPrototype";
 
 export class Game {
     private _heroNumber: number;
@@ -43,13 +44,27 @@ export class Game {
 
     private initializeOneCard(index: number) {
         let $card = $('#choose-card').clone();
+        let prototype = store.heroes[index];
         $card.children('div').attr('data-hero-id', index);
-        $card.find('.my-title').html(store.heroes[index].name);
-        $card.find('.my-first-description').html(store.heroes[index].firstDescription);
-        $card.find('.my-second-description').html(store.heroes[index].secondDescription);
+        $card.find('.my-title').html(prototype.name);
+        $card.find('.my-first-description').html(prototype.firstDescription);
+        $card.find('.my-second-description').html(prototype.secondDescription);
+        let $innerCard = $card.find('.card');
+        let $popover = $('.choose-card-data-content').clone();
+        this.fillPopover(prototype, $popover);
+        $innerCard.attr('title', prototype.name);
+        $innerCard.attr('data-content', $popover.html());
         $card.removeClass('d-none');
-        $card.on('click', () => { this.chooseCardOnClick(index, $card.find('.card')) });
+        $card.on('click', () => { this.chooseCardOnClick(index, $innerCard) });
         return $card;
+    }
+
+    private fillPopover(prototype: HeroPrototype, $popover: JQuery<HTMLElement>){
+        $popover.find('.hp').text(prototype.hp);
+        $popover.find('.mana').text(prototype.mana);
+        $popover.find('.perks').html(prototype.skills.reduce((previous, current) =>
+            `<div>${store.perks[current].name}</div>>`, ''));
+        $popover.removeClass('d-none');
     }
 
     private chooseCardOnClick(index: number, $card: JQuery<HTMLElement>): void {

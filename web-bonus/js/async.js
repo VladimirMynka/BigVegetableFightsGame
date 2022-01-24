@@ -1393,11 +1393,11 @@ exports.store = {
     perks: storeJSON.perks.map((jsonPerk) => parsePerk(jsonPerk))
 }
 function parseHero(json) {
-    return new HeroPrototype_1.HeroPrototype(json.id, json.name, json.hp, json.mana, json.skills, json.motto, json.firstDescription, json.secondDescription, json.answer, function ($card) { Function('$card', json.reaction)($card); });
+    return new HeroPrototype_1.HeroPrototype(json.id, json.name, json.hp, json.mana, json.skills, json.motto, json.firstDescription, json.secondDescription, json.answer, function ($card) { Function('$card', 'Util', json.reaction)($card, Util_1.Util); });
 }
 function parsePerk(json) {
     return new PerkPrototype_1.PerkPrototype(json.id, json.name, json.mana, json.fighterManaDemand, json.info, function (target, owner, game) {
-        Function('target, owner', 'game', json.effect)(target, owner, game);
+        Function('target, owner', 'game', 'Util', json.effect)(target, owner, game, Util_1.Util);
     }, json.forSelf, json.actionString, json.score, json.countOfImages != null ? Util_1.Util.getImagesPaths(json.id, json.countOfImages) : null);
 }
 // exports.store = {

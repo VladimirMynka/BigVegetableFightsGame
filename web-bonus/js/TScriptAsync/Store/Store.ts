@@ -6,6 +6,19 @@ import { Util } from "../Common/Util";
 import { Game } from "../Main/Game";
 import { Enemy } from "../Fighters/Enemy/Enemy";
 
+// var storeJSON = JSON.parse(data);
+// exports.store = {
+//     enemiesMaxCount: storeJSON.enemiesMaxCount,
+//     minAddEnemyChance: storeJSON.minAddEnemyChance,
+//     maxAddEnemyChance: storeJSON.maxAddEnemyChance,
+//     gameTiming: storeJSON.gameTiming,
+//     startEnemyCount: storeJSON.startEnemyCount,
+//     diedLog: storeJSON.diedLog,
+//     heroes: storeJSON.heroes.map((jsonHero) => parseHero(jsonHero)),
+//     enemies: storeJSON.enemies,
+//     perks: storeJSON.perks.map((jsonPerk) => parsePerk(jsonPerk))
+// }
+
 function parseHero(json: any): HeroPrototype {
     return new HeroPrototype(
         json.id,
