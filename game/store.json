@@ -13,7 +13,7 @@ data = `{
             "name": "Кукумбер",
             "hp": 500,
             "mana": 100,
-            "skills": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            "skills": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             "motto": "Всех закукумбрю!",
             "firstDescription": "<span class='text-success'>Зелёный</span>, пупырчатый, любит, когда его кусают",
             "secondDescription": "Не <span class='text-danger'>красный</span>! Не путать!",
@@ -72,7 +72,7 @@ data = `{
             "name": "Арбузун",
             "hp": 800,
             "mana": 100,
-            "skills": [0, 2, 3, 6],
+            "skills": [0, 9, 10],
             "motto": "Шпшпшпш",
             "firstDescription": "Типа Арбузон",
             "secondDescription": "Но только Арбузун",
@@ -220,6 +220,30 @@ data = `{
             "forSelf": true,
             "actionString": "очень глупый",
             "score": 500
-        }
+        },
+	{
+	    "id": 7,
+            "name": "Создание деверсанта",
+	    "mana": 1,
+            "fighterManaDemand": 100,
+            "info": "Пытается убить чужими руками",
+            "effect": "{game.addEnemy({id: 0, name: 'Предатель', hp: 500, mana: 500, skills: [0, 2, 3, 10], motto: 'Я лысый'}); let enemy = game.enemies[game.enemies.length - 1]; enemy.getCard().getCard().addClass('bg-success'); } ",
+            "forSelf": true,
+            "actionString": "создал доброго врага",
+            "score": 1000,
+            "countOfImages": 26
+	},
+        {
+	    "id": 3,
+            "name": "Лечение врага",
+	    "mana": 50,
+            "fighterManaDemand": 20,
+            "info": "Лечит врага. Глупый совсем",
+            "effect": "{target.addHp(500); }",
+            "forSelf": false,
+            "actionString": "глупый. Он вылечил",
+            "score": 1000,
+            "countOfImages": 13
+	}
     ]
 }`;

@@ -792,7 +792,7 @@ var Game = /** @class */ (function () {
             this.enemies.push(new Enemy_1.Enemy(Store_1.store.enemies[Util_1.Util.randomInt(0, Store_1.store.enemies.length)], this));
         else if (typeof arguments[0] === 'number')
             this.enemies.push(new Enemy_1.Enemy(Store_1.store.enemies[arguments[0]], this));
-        else if (arguments[0] instanceof FighterPrototype_1.FighterPrototype)
+        else if (typeof arguments[0] === 'object')
             this.enemies.push(new Enemy_1.Enemy(arguments[0], this));
     };
     Game.prototype.increaseKilledCount = function () {
